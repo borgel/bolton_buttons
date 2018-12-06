@@ -1,8 +1,13 @@
+#include <Adafruit_DotStar.h>
+#include <SPI.h>
+#include <Wire.h>
 
 #include <usb_keyboard.h>
 
 #include "buttonmap.h"
 
+// TODO package
+static Adafruit_DotStar strip = Adafruit_DotStar(9, 12, 14, DOTSTAR_BRG);
 void setup() {
   // wait for USB enumeration
   delay(1000);
@@ -22,6 +27,11 @@ void setup() {
   //TODO interrupt config
 
   Keyboard.print("a");
+  strip.begin();
+  strip.show();
+  strip.setPixelColor(0, 10, 100, 50);
+  strip.setPixelColor(8, 200, 100, 50);
+  strip.show();
 
   //FIXME rm
   Serial.println("Done with setup");
