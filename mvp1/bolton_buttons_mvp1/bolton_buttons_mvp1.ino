@@ -1,4 +1,5 @@
 #include <Adafruit_DotStar.h>
+#include <Bounce2.h>
 #include <SPI.h>
 #include <Wire.h>
 
@@ -8,6 +9,8 @@
 
 // TODO package
 static Adafruit_DotStar strip = Adafruit_DotStar(9, 12, 14, DOTSTAR_BRG);
+static Bounce * buttonBouncers = new Bounce[NUM_BUTTONS];
+
 void setup() {
   // wait for USB enumeration
   delay(1000);
@@ -16,22 +19,27 @@ void setup() {
   
   // attach bouncer to all buttons
   ButtonAssignment *ba = &button_assignments[0];
-  for(int i = 0; button_assignments[i].pin != BUTTON_ASSIGNMENT_UNASSIGNED; i++) {
+  for(int i = 0; i < NUM_BUTTONS; i++) {
     ba = &button_assignments[i];
 
-    pinMode(ba->pin, INPUT);
+    buttonBouncers[i].attach(ba->pin, INPUT_PULLUP);
+    buttonBouncers[i].interval(25);
     
     Serial.printf("Attached button on pin %d\n", ba->pin);
   }
 
   //TODO interrupt config
 
-  Keyboard.print("a");
+  //Keyboard.print("a");
+
   strip.begin();
   strip.show();
+
+  /*
   strip.setPixelColor(0, 10, 100, 50);
   strip.setPixelColor(8, 200, 100, 50);
   strip.show();
+  */
 
   //FIXME rm
   Serial.println("Done with setup");
@@ -39,10 +47,21 @@ void setup() {
 
 void loop() {
   //check for key flags, and send data
+  for(int i = 0; i < NUM_BUTTONS; i++) {
+    Bounce * b = &buttonBouncers[i];
+    b->update();
+    if(b->rose()) {
+      Serial.printf("%d rose\n", i);
+    }
+    else if(b->fell()) {
+      Serial.println("fell");
+    }
+    //Serial.printf("%d,%d  ", i, digitalRead(button_assignments[i].pin));
+  }
 }
 
 const ButtonAssignment * const getButtonForPin(int pin) {
-  if(pin == BUTTON_ASSIGNMENT_UNASSIGNED) {
+  if(pin < 0) {
     return NULL;
   }
 
