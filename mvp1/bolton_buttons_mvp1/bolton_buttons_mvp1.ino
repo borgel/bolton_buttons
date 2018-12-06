@@ -64,8 +64,7 @@ void loop() {
       display.clear();
       display.display();
       
-      keyboard_keys[0] = 0;
-      usb_keyboard_send();
+      Keyboard.release(button_assignments[i].key);
     }
     else if(b->fell()) {
       Serial.printf("pin %d press...", button_assignments[i].pin);
@@ -74,9 +73,7 @@ void loop() {
       display.printf("%d Down", button_assignments[i].pin);
       display.display();
 
-      keyboard_keys[0] = button_assignments[i].key;
-      usb_keyboard_send();
-      //Keyboard.print(button_assignments[i].key);
+      Keyboard.press(button_assignments[i].key);
     }
     //Serial.printf("%d,%d  ", i, digitalRead(button_assignments[i].pin));
   }
