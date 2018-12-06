@@ -13,15 +13,16 @@ typedef struct {
 
 // TODO separate pin from key
 ButtonAssignment button_assignments[NUM_BUTTONS] = {
-  {2, KEY_W},   //f
-  {3, KEY_W},   //f
-  {4, KEY_W},   //
-  {5, KEY_W},   //
-  {6, KEY_W},   //
-  {7, KEY_W},   //
-  {8, KEY_W},   //
-  {9, KEY_W},   //
-  {10, KEY_W},  //
+  //pin, key to press and release on down
+  {2, KEY_5},   //5
+  {3, KEY_7},   //7
+  {4, KEY_6},   //6
+  {5, KEY_2},   //2
+  {6, KEY_ESC},   //esc
+  {7, KEY_1},   //1
+  {8, KEY_4},   //4
+  {9, KEY_8},   //8
+  {10, KEY_3},  //3
   
   {16, KEY_W},  // bonus buttons
   {15, KEY_W},  // encoder switch
