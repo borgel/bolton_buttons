@@ -46,7 +46,7 @@ void setup() {
 
   //setup display
   display.begin();
-  display.print("asd");
+  display.print("Potatoe Is Nice");
   display.display();
 
   //FIXME rm
@@ -60,9 +60,15 @@ void loop() {
     b->update();
     if(b->rose()) {
       Serial.printf("%d rose\n", i);
+
+      display.clear();
+      display.display();
     }
     else if(b->fell()) {
       Serial.println("fell");
+      display.clear();
+      display.printf("%d Down", button_assignments[i].pin);
+      display.display();
     }
     //Serial.printf("%d,%d  ", i, digitalRead(button_assignments[i].pin));
   }
