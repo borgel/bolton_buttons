@@ -1,11 +1,27 @@
+
+
 #include <Adafruit_DotStar.h>
 #include <Bounce2.h>
 #include <SPI.h>
 #include <Wire.h>
 
+// not sure if this is needed
+#define SSD1306_128_32
+
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
 #include <usb_keyboard.h>
 
 #include "buttonmap.h"
+
+//TODO package
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 32 // OLED display height, in pixels
+
+// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+//#define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
+Adafruit_SSD1306 display(-1);
 
 // TODO package
 static Adafruit_DotStar strip = Adafruit_DotStar(9, 12, 14, DOTSTAR_BRG);
@@ -34,6 +50,15 @@ void setup() {
 
   strip.begin();
   strip.show();
+
+  //setup display
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C); // Address 0x3C for 128x32?
+  display.display();
+  display.clearDisplay();
+  display.drawPixel(10, 10, WHITE);
+  display.drawPixel(10, 11, WHITE);
+  display.drawPixel(10, 12, WHITE);
+  display.display();
 
   /*
   strip.setPixelColor(0, 10, 100, 50);
