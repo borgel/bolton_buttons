@@ -65,6 +65,9 @@ void loop() {
       display.display();
       
       Keyboard.release(button_assignments[i].key);
+      
+      strip.setPixelColor(button_assignments[i].led_index, 0, 0, 0);
+      strip.show();
     }
     else if(b->fell()) {
       Serial.printf("pin %d press...", button_assignments[i].pin);
@@ -74,6 +77,9 @@ void loop() {
       display.display();
 
       Keyboard.press(button_assignments[i].key);
+      
+      strip.setPixelColor(button_assignments[i].led_index, 255, 127, 0);
+      strip.show();
     }
     //Serial.printf("%d,%d  ", i, digitalRead(button_assignments[i].pin));
   }
