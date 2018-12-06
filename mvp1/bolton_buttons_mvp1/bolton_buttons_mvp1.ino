@@ -59,16 +59,24 @@ void loop() {
     Bounce * b = &buttonBouncers[i];
     b->update();
     if(b->rose()) {
-      Serial.printf("%d rose\n", i);
+      Serial.printf("release\n");
 
       display.clear();
       display.display();
+      
+      keyboard_keys[0] = 0;
+      usb_keyboard_send();
     }
     else if(b->fell()) {
-      Serial.println("fell");
+      Serial.printf("pin %d press...", button_assignments[i].pin);
+      
       display.clear();
       display.printf("%d Down", button_assignments[i].pin);
       display.display();
+
+      keyboard_keys[0] = button_assignments[i].key;
+      usb_keyboard_send();
+      //Keyboard.print(button_assignments[i].key);
     }
     //Serial.printf("%d,%d  ", i, digitalRead(button_assignments[i].pin));
   }
