@@ -59,6 +59,9 @@ void loop() {
     Bounce * b = &buttonBouncers[i];
     b->update();
     if(b->rose()) {
+      keyEvent(&button_assignments[i], false);
+
+      /*
       Serial.printf("release\n");
 
       display.clear();
@@ -68,8 +71,11 @@ void loop() {
       
       strip.setPixelColor(button_assignments[i].led_index, 0, 0, 0);
       strip.show();
+      */
     }
     else if(b->fell()) {
+      keyEvent(&button_assignments[i], true);
+      /*
       Serial.printf("pin %d press...", button_assignments[i].pin);
       
       display.clear();
@@ -80,16 +86,17 @@ void loop() {
       
       strip.setPixelColor(button_assignments[i].led_index, 255, 127, 0);
       strip.show();
+      */
     }
-    //Serial.printf("%d,%d  ", i, digitalRead(button_assignments[i].pin));
   }
 }
 
-const ButtonAssignment * const getButtonForPin(int pin) {
-  if(pin < 0) {
-    return NULL;
+void keyEvent(ButtonAssignment const * const b, bool const wasPress) {
+  if(wasPress) {
+    strip.setPixelColor(b->led_index, 255, 127, 0);
   }
-
-  //TODO linear array search
-  return NULL;
+  else {
+    strip.setPixelColor(b->led_index, 0, 0, 0);
+  }
+  strip.show();
 }
