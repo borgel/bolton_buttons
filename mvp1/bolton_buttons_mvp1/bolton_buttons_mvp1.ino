@@ -37,10 +37,6 @@ void setup() {
     Serial.printf("Attached button on pin %d\n", ba->pin);
   }
 
-  //TODO interrupt config
-
-  //Keyboard.print("a");
-
   strip.begin();
   strip.show();
 
@@ -49,7 +45,6 @@ void setup() {
   display.print("Potatoe Is Nice");
   display.display();
 
-  //FIXME rm
   Serial.println("Done with setup");
 }
 
@@ -60,33 +55,9 @@ void loop() {
     b->update();
     if(b->rose()) {
       keyEvent(&button_assignments[i], false);
-
-      /*
-      Serial.printf("release\n");
-
-      display.clear();
-      display.display();
-      
-      Keyboard.release(button_assignments[i].key);
-      
-      strip.setPixelColor(button_assignments[i].led_index, 0, 0, 0);
-      strip.show();
-      */
     }
     else if(b->fell()) {
       keyEvent(&button_assignments[i], true);
-      /*
-      Serial.printf("pin %d press...", button_assignments[i].pin);
-      
-      display.clear();
-      display.printf("%d Down", button_assignments[i].pin);
-      display.display();
-
-      Keyboard.press(button_assignments[i].key);
-      
-      strip.setPixelColor(button_assignments[i].led_index, 255, 127, 0);
-      strip.show();
-      */
     }
   }
 }
