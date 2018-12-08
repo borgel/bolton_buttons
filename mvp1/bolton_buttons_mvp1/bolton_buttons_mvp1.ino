@@ -34,7 +34,7 @@ void setup() {
     ba = &button_assignments[i];
 
     buttonBouncers[i].attach(ba->pin, INPUT_PULLUP);
-    buttonBouncers[i].interval(25);
+    buttonBouncers[i].interval(40);
     
     Serial.printf("Attached button on pin %d\n", ba->pin);
   }
