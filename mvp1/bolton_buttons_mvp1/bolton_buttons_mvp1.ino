@@ -92,11 +92,35 @@ void loop() {
 }
 
 void keyEvent(ButtonAssignment const * const b, bool const wasPress) {
+  // if this was a special key, fire the CB and return
+  if(b->special) {
+    return b->special(wasPress);
+  }
+
+  // normal key
+  KeymapAssignment const * const ka = getKeymapForKey(b);
   if(wasPress) {
-    strip.setPixelColor(b->led_index, 255, 127, 0);
+    strip.setPixelColor(b->ledIndex, 255, 127, 0);
+    Keyboard.press(ka->key);
   }
   else {
-    strip.setPixelColor(b->led_index, 0, 0, 0);
+    strip.setPixelColor(b->ledIndex, 0, 0, 0);
+    Keyboard.release(ka->key);
   }
   strip.show();
+}
+
+void modeButtonCB(bool const wasPress) {
+  display.clear();
+  display.printf("Special press = %d", wasPress);
+  display.display();
+}
+
+void encoderButtonCB(bool const wasPress) {
+  Serial.printf("Encoder button press was %d", wasPress);
+}
+
+KeymapAssignment * const getKeymapForKey(ButtonAssignment const * const butt) {
+  // TODO adapt to multiple possible keymaps
+  return &keymapLayout[butt->assignmentMapIndex];
 }
