@@ -114,11 +114,14 @@ void switchKeyconfig(bool increment) {
     currentKeyConfig = 0;
   }
 
-  Serial.printf("Selected keymap to %d (%s)\n", currentKeyConfig, allKeymaps[currentKeyConfig].name);
+  KeymapConfig const * const kc = &allKeymaps[currentKeyConfig];
+  Serial.printf("Selected keymap to %d (%s)\n", currentKeyConfig, kc->name);
 
   // now do whatever to init this map
   display.clear();
-  display.printf("%s\n", allKeymaps[currentKeyConfig].name);
-  //TODO try writing all key map descriptions
+  display.printf("%s\n", kc->name);
+  for(int i = 0; i < kc->keymapLen; i++) {
+    display.printf("%d:%s\n", i, kc->keymap[i].name);
+  }
   display.display();
 }
