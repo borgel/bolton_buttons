@@ -76,10 +76,16 @@ void keyEvent(ButtonAssignment const * const b, bool const wasPress) {
   KeymapAssignment const * const ka = getKeymappingForKey(b);
   if(wasPress) {
     strip.setPixelColor(b->ledIndex, 255, 127, 0);
+    if(ka->modifier != -1) {
+      Keyboard.press(ka->modifier);
+    }
     Keyboard.press(ka->key);
   }
   else {
     strip.setPixelColor(b->ledIndex, 0, 0, 0);
+    if(ka->modifier != -1) {
+      Keyboard.release(ka->modifier);
+    }
     Keyboard.release(ka->key);
   }
   strip.show();

@@ -38,6 +38,7 @@ ButtonAssignment button_assignments[NUM_BUTTONS] = {
 };
 
 typedef struct {
+  int32_t modifier;
   uint32_t key;
   const char *name;
 } KeymapAssignment;
@@ -51,26 +52,26 @@ typedef struct {
 // keymaps for each button. ORDER MATTERS! When a key is pressed above
 // it will index into this array and invoke a key
 KeymapAssignment keymapLayout[NUM_NORMAL_KEYS] = {
-  {KEY_ESC, "ESC"},    //esc
-  {KEY_1, "Grid -"},      //f1
-  {KEY_V, "Layer Swap"},      //f2
-  {KEY_X, "Start Track"},      //f3
-  {KEY_1, "Track Width -"},   //f4
-  {KEY_N, "Grid +"},   //f5
-  {KEY_DELETE, "Delete"},   //f6
-  {KEY_M, "Move"},   //f7
-  {KEY_W, "Track Width +"},   //f8
+  {-1,                  KEY_ESC, "ESC"},    //esc
+  {MODIFIERKEY_SHIFT,   KEY_N, "Grid -"},      //f1
+  {-1,                  KEY_V, "Layer Swap"},      //f2
+  {-1,                  KEY_X, "Start Track"},      //f3
+  {MODIFIERKEY_CTRL ,   KEY_W, "Track Width -"},   //f4
+  {-1,                  KEY_N, "Grid +"},   //f5
+  {-1,                  KEY_DELETE, "Delete"},   //f6
+  {-1,                  KEY_M, "Move"},   //f7
+  {-1,                  KEY_W, "Track Width +"},   //f8
 };
 KeymapAssignment keymapTest[NUM_NORMAL_KEYS] = {
-  {KEY_E, "ESC"},    //esc
-  {KEY_1, "1"},     //f1
-  {KEY_2, "2"},     //f2
-  {KEY_3, "3"},     //f3
-  {KEY_4, "4"},     //f4
-  {KEY_5, "5"},     //f5
-  {KEY_6, "6"},     //f6
-  {KEY_7, "7"},     //f7
-  {KEY_8, "8"},     //f8
+  {-1,                  KEY_E, "ESC"},    //esc
+  {-1,                  KEY_1, "1"},     //f1
+  {-1,                  KEY_2, "2"},     //f2
+  {-1,                  KEY_3, "3"},     //f3
+  {-1,                  KEY_4, "4"},     //f4
+  {-1,                  KEY_5, "5"},     //f5
+  {-1,                  KEY_6, "6"},     //f6
+  {-1,                  KEY_7, "7"},     //f7
+  {-1,                  KEY_8, "8"},     //f8
 };
 
 // the master structure of maps
