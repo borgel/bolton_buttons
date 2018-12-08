@@ -11,6 +11,8 @@
 
 #include "buttonmap.h"
 
+static int currentKeyConfig;
+
 //TODO package
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
@@ -44,6 +46,8 @@ void setup() {
   display.begin();
   display.print("Potatoe Is Nice");
   display.display();
+  
+  switchKeyconfig(true);
 
   Serial.println("Done with setup");
 }
@@ -69,7 +73,7 @@ void keyEvent(ButtonAssignment const * const b, bool const wasPress) {
   }
 
   // normal key
-  KeymapAssignment const * const ka = getKeymapForKey(b);
+  KeymapAssignment const * const ka = getKeymappingForKey(b);
   if(wasPress) {
     strip.setPixelColor(b->ledIndex, 255, 127, 0);
     Keyboard.press(ka->key);
@@ -82,16 +86,32 @@ void keyEvent(ButtonAssignment const * const b, bool const wasPress) {
 }
 
 void modeButtonCB(bool const wasPress) {
-  display.clear();
-  display.printf("Special press = %d", wasPress);
-  display.display();
+  if(wasPress) {
+    switchKeyconfig(true);
+  }
 }
 
 void encoderButtonCB(bool const wasPress) {
   Serial.printf("Encoder button press was %d", wasPress);
 }
 
-KeymapAssignment * const getKeymapForKey(ButtonAssignment const * const butt) {
-  // TODO adapt to multiple possible keymaps
-  return &keymapLayout[butt->assignmentMapIndex];
+const KeymapAssignment * const getKeymappingForKey(ButtonAssignment const * const butt) {
+  // the current group of key assignments
+  KeymapAssignment const * const ka = allKeymaps[currentKeyConfig].keymap;
+  // get the assignment for this key
+  return &ka[butt->assignmentMapIndex];
+}
+
+void switchKeyconfig(bool increment) {
+  currentKeyConfig++;
+  if(allKeymaps[currentKeyConfig].name == NULL) {
+    currentKeyConfig = 0;
+  }
+
+  Serial.printf("Selected keymap to %d (%s)\n", currentKeyConfig, allKeymaps[currentKeyConfig].name);
+
+  // now do whatever to init this map
+  display.clear();
+  display.printf("%s\n", allKeymaps[currentKeyConfig].name);
+  display.display();
 }

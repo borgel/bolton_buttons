@@ -39,13 +39,20 @@ ButtonAssignment button_assignments[NUM_BUTTONS] = {
 
 typedef struct {
   uint32_t key;
+  const char *name;
 } KeymapAssignment;
+
+typedef struct {
+  const char *name;
+  int keymapLen;
+  KeymapAssignment const * const keymap;
+} KeymapConfig;
 
 // keymaps for each button. ORDER MATTERS! When a key is pressed above
 // it will index into this array and invoke a key
 KeymapAssignment keymapLayout[NUM_NORMAL_KEYS] = {
-  {KEY_ESC},    //esc
-  {KEY_1},      //f1
+  {KEY_ESC, "ESC"},    //esc
+  {KEY_1, "Grid-"},      //f1
   {KEY_1},      //f2
   {KEY_1},      //f3
   {KEY_1},
@@ -53,4 +60,11 @@ KeymapAssignment keymapLayout[NUM_NORMAL_KEYS] = {
   {KEY_1},
   {KEY_1},
   {KEY_1}, 
+};
+
+// the master structure of maps
+KeymapConfig allKeymaps[] = {
+  {"KiCAD: Schematic", NUM_NORMAL_KEYS, keymapLayout},
+  {"KiCAD: Layout", NUM_NORMAL_KEYS, keymapLayout},
+  {NULL},   // end flag
 };
