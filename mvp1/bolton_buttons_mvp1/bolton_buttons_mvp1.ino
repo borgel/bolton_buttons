@@ -113,5 +113,6 @@ void switchKeyconfig(bool increment) {
   // now do whatever to init this map
   display.clear();
   display.printf("%s\n", allKeymaps[currentKeyConfig].name);
+  //TODO try writing all key map descriptions
   display.display();
 }
