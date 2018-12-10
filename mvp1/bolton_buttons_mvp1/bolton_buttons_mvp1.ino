@@ -73,10 +73,10 @@ void loop() {
     Bounce * b = &buttonBouncers[i];
     b->update();
     if(b->rose()) {
-      keyEvent(&button_assignments[i], false);
+      keyPressEvent(&button_assignments[i], false);
     }
     else if(b->fell()) {
-      keyEvent(&button_assignments[i], true);
+      keyPressEvent(&button_assignments[i], true);
     }
   }
 
@@ -87,11 +87,13 @@ void loop() {
     // only dispatch an event on %4 (that matches the HW detents)
     if(lastKnob % 4 == 0) {
       Serial.printf("knob %d\n", lastKnob);
+
+      //TODO send events somewhere
     }
   }
 }
 
-void keyEvent(ButtonAssignment const * const b, bool const wasPress) {
+void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
   // if this was a special key, fire the CB and return
   if(b->special) {
     return b->special(wasPress);
@@ -102,20 +104,24 @@ void keyEvent(ButtonAssignment const * const b, bool const wasPress) {
   if(wasPress) {
     strip.setPixelColor(b->ledIndex, 255, 127, 0);
     setKnobLED(rand() % 100, rand() % 100, rand() % 100);
-    
-    if(ka->modifier != -1) {
-      Keyboard.press(ka->modifier);
+
+    if(ka->press.key != KS_INACTIVE) {
+      if(ka->press.modifier != KS_NO_MODIFIER) {
+        Keyboard.press(ka->press.modifier);
+      }
+      Keyboard.press(ka->press.key);
     }
-    Keyboard.press(ka->key);
   }
   else {
     strip.setPixelColor(b->ledIndex, 0, 0, 0);
     setKnobLEDWhite(0);
     
-    if(ka->modifier != -1) {
-      Keyboard.release(ka->modifier);
+    if(ka->press.key != KS_INACTIVE) {
+      if(ka->press.modifier != KS_NO_MODIFIER) {
+        Keyboard.release(ka->press.modifier);
+      }
+      Keyboard.release(ka->press.key);
     }
-    Keyboard.release(ka->key);
   }
   strip.show();
 }

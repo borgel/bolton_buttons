@@ -37,10 +37,20 @@ ButtonAssignment button_assignments[NUM_BUTTONS] = {
   {15, -1, 0, encoderButtonCB},  // encoder switch
 };
 
+#define KS_INACTIVE (0)
+#define KS_NO_MODIFIER (-1)
+
 typedef struct {
   int32_t modifier;
-  uint32_t key;
+  int key;
   const char *name;
+} KeyShortcut;
+
+typedef struct {
+  const char *name;
+  KeyShortcut press;
+  KeyShortcut decrement;
+  KeyShortcut increment;
 } KeymapAssignment;
 
 typedef struct {
@@ -51,6 +61,16 @@ typedef struct {
 
 // keymaps for each button. ORDER MATTERS! When a key is pressed above
 // it will index into this array and invoke a key
+KeymapAssignment keymapLayout[NUM_NORMAL_KEYS] = {
+  {"ESC",
+    .press={KS_NO_MODIFIER, KEY_ESC, "ESC"},
+    .decrement={},
+    .increment={},
+  },
+  
+};
+KeymapAssignment keymapTest[NUM_NORMAL_KEYS] = {};
+/*
 KeymapAssignment keymapLayout[NUM_NORMAL_KEYS] = {
   {-1,                  KEY_ESC, "ESC"},    //esc
   {MODIFIERKEY_SHIFT,   KEY_N, "Grid -"},      //f1
@@ -73,6 +93,7 @@ KeymapAssignment keymapTest[NUM_NORMAL_KEYS] = {
   {-1,                  KEY_7, "7"},     //f7
   {-1,                  KEY_8, "8"},     //f8
 };
+*/
 
 // the master structure of maps
 KeymapConfig allKeymaps[] = {
