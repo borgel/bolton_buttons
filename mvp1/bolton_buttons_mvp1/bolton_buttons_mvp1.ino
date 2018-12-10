@@ -9,6 +9,7 @@
 
 #include <usb_keyboard.h>
 #include <Encoder.h>
+#include "SoftPWM.h"
 
 #include "buttonmap.h"
 
@@ -52,7 +53,14 @@ void setup() {
   
   switchKeyconfig(true);
 
-  //setup the encoder
+  // knob LEDs
+  SoftPWMBegin();
+  SoftPWMSet(17, 100);
+  SoftPWMSet(18, 100);
+  SoftPWMSet(19, 100);
+  SoftPWMSetFadeTime(17, 500, 500);
+  SoftPWMSetFadeTime(18, 500, 500);
+  SoftPWMSetFadeTime(17, 500, 500);
 
   Serial.println("Done with setup");
 }
@@ -60,6 +68,8 @@ void setup() {
 static long lastKnob = 0;
 void loop() {
   //check for key flags, and send data
+  // set the knob IO to low for just a moment to sense
+  
   for(int i = 0; i < NUM_BUTTONS; i++) {
     Bounce * b = &buttonBouncers[i];
     b->update();
@@ -78,6 +88,10 @@ void loop() {
     // only dispatch an event on %4 (that matches the HW detents)
     if(lastKnob % 4 == 0) {
       Serial.printf("knob %d\n", lastKnob);
+      
+      SoftPWMSetPercent(17, rand() % 100);
+      SoftPWMSetPercent(18, rand() % 100);
+      SoftPWMSetPercent(19, rand() % 100);
     }
   }
 }
@@ -140,4 +154,8 @@ void switchKeyconfig(bool increment) {
     display.printf("%d:%s\n", i, kc->keymap[i].name);
   }
   display.display();
+}
+
+void setKnobLED(uint8_t r, uint8_t g, uint8_t b) {
+  
 }
