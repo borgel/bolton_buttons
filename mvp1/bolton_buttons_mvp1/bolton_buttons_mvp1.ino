@@ -54,13 +54,12 @@ void setup() {
   switchKeyconfig(true);
 
   // knob LEDs
-  SoftPWMBegin();
-  SoftPWMSet(17, 100);
-  SoftPWMSet(18, 100);
-  SoftPWMSet(19, 100);
-  SoftPWMSetFadeTime(17, 500, 500);
-  SoftPWMSetFadeTime(18, 500, 500);
-  SoftPWMSetFadeTime(17, 500, 500);
+  SoftPWMBegin(SOFTPWM_INVERTED);
+  SoftPWMSet(17, 0);
+  SoftPWMSet(18, 0);
+  SoftPWMSet(19, 0);
+  SoftPWMSetFadeTime(ALL, 100, 100);
+  setKnobLEDWhite(0);
 
   Serial.println("Done with setup");
 }
@@ -88,10 +87,6 @@ void loop() {
     // only dispatch an event on %4 (that matches the HW detents)
     if(lastKnob % 4 == 0) {
       Serial.printf("knob %d\n", lastKnob);
-      
-      SoftPWMSetPercent(17, rand() % 100);
-      SoftPWMSetPercent(18, rand() % 100);
-      SoftPWMSetPercent(19, rand() % 100);
     }
   }
 }
@@ -156,6 +151,12 @@ void switchKeyconfig(bool increment) {
   display.display();
 }
 
+// set each param 0-100%
 void setKnobLED(uint8_t r, uint8_t g, uint8_t b) {
-  
+  SoftPWMSetPercent(17, r);
+  SoftPWMSetPercent(18, g);
+  SoftPWMSetPercent(19, b);
+}
+void setKnobLEDWhite(uint8_t level) {
+  setKnobLED(level, level, level);
 }
