@@ -8,6 +8,7 @@
 #include <oled.h>
 
 #include <usb_keyboard.h>
+#include <Encoder.h>
 
 #include "buttonmap.h"
 
@@ -21,6 +22,8 @@ OLED display = OLED(23, 22 ,NO_RESET_PIN,0x3C,SCREEN_WIDTH,SCREEN_HEIGHT, true);
 // TODO package
 static Adafruit_DotStar strip = Adafruit_DotStar(9, 12, 14, DOTSTAR_BRG);
 static Bounce * buttonBouncers = new Bounce[NUM_BUTTONS];
+
+static Encoder knob(20, 21);
 
 void setup() {
   // wait for USB enumeration
@@ -49,9 +52,12 @@ void setup() {
   
   switchKeyconfig(true);
 
+  //setup the encoder
+
   Serial.println("Done with setup");
 }
 
+static long lastKnob = 0;
 void loop() {
   //check for key flags, and send data
   for(int i = 0; i < NUM_BUTTONS; i++) {
@@ -62,6 +68,16 @@ void loop() {
     }
     else if(b->fell()) {
       keyEvent(&button_assignments[i], true);
+    }
+  }
+
+  // look for a knob change and dispatch events
+  if(knob.read() != lastKnob) {
+    lastKnob = knob.read();
+
+    // only dispatch an event on %4 (that matches the HW detents)
+    if(lastKnob % 4 == 0) {
+      Serial.printf("knob %d\n", lastKnob);
     }
   }
 }
