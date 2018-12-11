@@ -13,7 +13,7 @@
 
 #include "buttonmap.h"
 
-static int currentKeyConfig;
+static int currentKeyConfig = 0;
 
 //TODO package
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
@@ -35,7 +35,7 @@ void setup() {
   Serial.println("Booted...");
   
   // attach bouncer to all buttons
-  ButtonAssignment *ba = &button_assignments[0];
+  ButtonAssignment *ba;
   for(int i = 0; i < NUM_BUTTONS; i++) {
     ba = &button_assignments[i];
 
@@ -53,7 +53,7 @@ void setup() {
   display.print("Potato Is Nice");
   display.display();
   
-  switchKeyconfig(true);
+  switchKeyconfig();
 
   // knob LEDs
   SoftPWMBegin(SOFTPWM_INVERTED);
@@ -144,7 +144,7 @@ void knobEvent(bool const wasIncrement) {
 
 void modeButtonCB(bool const wasPress) {
   if(wasPress) {
-    switchKeyconfig(true);
+    switchKeyconfig();
   }
 }
 
@@ -163,7 +163,7 @@ const KeymapAssignment * const getKeymappingForKey(ButtonAssignment const * cons
   return &ka[butt->assignmentMapIndex];
 }
 
-void switchKeyconfig(bool increment) {
+void switchKeyconfig() {
   currentKeyConfig++;
   if(allKeymaps[currentKeyConfig].name == NULL) {
     currentKeyConfig = 0;
