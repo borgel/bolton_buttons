@@ -22,7 +22,7 @@ typedef struct {
 
 // TODO separate pin from key
 ButtonAssignment button_assignments[NUM_BUTTONS] = {
-  //pin, keymap index, related LED
+  //pin, keymap index, related LED chain offset
   {2, 5, 7},   //5
   {3, 7, 0},   //7
   {4, 6, 6},   //6
@@ -62,12 +62,21 @@ typedef struct {
 // keymaps for each button. ORDER MATTERS! When a key is pressed above
 // it will index into this array and invoke a key
 KeymapAssignment keymapLayout[NUM_NORMAL_KEYS] = {
+  //esc
   {"ESC",
     .press={KS_NO_MODIFIER, KEY_ESC, "ESC"},
     .decrement={},
     .increment={},
   },
-  
+
+  //f1
+  {"Grid",
+    .press={},
+    .decrement={MODIFIERKEY_SHIFT, KEY_N, "Grid -"},
+    .increment={KS_NO_MODIFIER,    KEY_N, "Grid +"},
+  },
+
+  //f2
 };
 KeymapAssignment keymapTest[NUM_NORMAL_KEYS] = {};
 /*

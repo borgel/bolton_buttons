@@ -26,6 +26,8 @@ static Bounce * buttonBouncers = new Bounce[NUM_BUTTONS];
 
 static Encoder knob(20, 21);
 
+static KeymapAssignment const * pressedKey;
+
 void setup() {
   // wait for USB enumeration
   delay(1000);
@@ -82,20 +84,23 @@ void loop() {
 
   // look for a knob change and dispatch events
   if(knob.read() != lastKnob) {
+    long prevKnob = lastKnob;
     lastKnob = knob.read();
 
     // only dispatch an event on %4 (that matches the HW detents)
     if(lastKnob % 4 == 0) {
-      Serial.printf("knob %d\n", lastKnob);
-
-      //TODO send events somewhere
+      // clockwise is more negative
+      knobEvent(lastKnob - prevKnob < 0);
     }
   }
 }
 
 void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
   // if this was a special key, fire the CB and return
+  //FIXME rm
+  Serial.printf("key event\n");
   if(b->special) {
+    Serial.println("Special key");
     return b->special(wasPress);
   }
 
@@ -107,14 +112,34 @@ void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
     
     safeKeyboardPress(&ka->press);
 
+    // mark this key as being pressed
+    pressedKey = ka;
   }
   else {
     strip.setPixelColor(b->ledIndex, 0, 0, 0);
     setKnobLEDWhite(0);
     
     safeKeyboardRelease(&ka->press);
+
+    // unmark this key as being pressed
+    pressedKey = NULL;
   }
   strip.show();
+}
+
+void knobEvent(bool const wasIncrement) {
+  if(pressedKey) {
+    if(wasIncrement){
+      safeKeyboardPress(&pressedKey->increment);
+      //TODO need delay?
+      safeKeyboardRelease(&pressedKey->increment);
+    }
+    else {
+      safeKeyboardPress(&pressedKey->decrement);
+      //TODO need delay?
+      safeKeyboardRelease(&pressedKey->decrement);
+    }
+  }
 }
 
 void modeButtonCB(bool const wasPress) {
@@ -128,6 +153,10 @@ void encoderButtonCB(bool const wasPress) {
 }
 
 const KeymapAssignment * const getKeymappingForKey(ButtonAssignment const * const butt) {
+  if(butt->assignmentMapIndex == -1) {
+    Serial.println("ERROR: Tried to get keymap for key without index");
+    while(1);
+  }
   // the current group of key assignments
   KeymapAssignment const * const ka = allKeymaps[currentKeyConfig].keymap;
   // get the assignment for this key
