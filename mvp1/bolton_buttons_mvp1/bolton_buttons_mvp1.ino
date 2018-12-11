@@ -111,6 +111,12 @@ void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
     
     safeKeyboardPress(&ka->press);
 
+    // show rotate fxns on display
+    display.clear();
+    display.printf("Dec: %s\n", ka->increment.name);
+    display.printf("Inc: %s\n", ka->increment.name);
+    display.display();
+
     // mark this key as being pressed
     pressedKey = ka;
   }
@@ -119,6 +125,10 @@ void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
     setKnobLEDWhite(0);
     
     safeKeyboardRelease(&ka->press);
+    
+    display.clear();
+    displayKeymapName();
+    display.display();
 
     // unmark this key as being pressed
     pressedKey = NULL;
@@ -173,11 +183,16 @@ void switchKeyconfig() {
 
   // now do whatever to init this map
   display.clear();
-  display.printf("%s\n", kc->name);
+  displayKeymapName();
   for(int i = 0; i < kc->keymapLen; i++) {
     display.printf("%d:%s\n", i, kc->keymap[i].name);
   }
   display.display();
+}
+
+void displayKeymapName() {
+  KeymapConfig const * const kc = &allKeymaps[currentKeyConfig];
+  display.printf("%s\n", kc->name);
 }
 
 // perform all safety checks and press or release a key with modifiers
