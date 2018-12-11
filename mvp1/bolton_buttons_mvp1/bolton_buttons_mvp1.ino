@@ -48,7 +48,7 @@ void setup() {
 
   //setup display
   display.begin();
-  display.print("Potatoe Is Nice");
+  display.print("Potato Is Nice");
   display.display();
   
   switchKeyconfig(true);
@@ -104,24 +104,15 @@ void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
   if(wasPress) {
     strip.setPixelColor(b->ledIndex, 255, 127, 0);
     setKnobLED(rand() % 100, rand() % 100, rand() % 100);
+    
+    safeKeyboardPress(&ka->press);
 
-    if(ka->press.key != KS_INACTIVE) {
-      if(ka->press.modifier != KS_NO_MODIFIER) {
-        Keyboard.press(ka->press.modifier);
-      }
-      Keyboard.press(ka->press.key);
-    }
   }
   else {
     strip.setPixelColor(b->ledIndex, 0, 0, 0);
     setKnobLEDWhite(0);
     
-    if(ka->press.key != KS_INACTIVE) {
-      if(ka->press.modifier != KS_NO_MODIFIER) {
-        Keyboard.release(ka->press.modifier);
-      }
-      Keyboard.release(ka->press.key);
-    }
+    safeKeyboardRelease(&ka->press);
   }
   strip.show();
 }
@@ -159,6 +150,23 @@ void switchKeyconfig(bool increment) {
     display.printf("%d:%s\n", i, kc->keymap[i].name);
   }
   display.display();
+}
+
+// perform all safety checks and press or release a key with modifiers
+void safeKeyboardPress(KeyShortcut const * const ks) {
+  if(ks->modifier != KS_NO_MODIFIER) {
+    Keyboard.press(ks->modifier);
+  }
+  if(ks->key != KS_INACTIVE) {
+    Keyboard.press(ks->key);
+  }
+}void safeKeyboardRelease(KeyShortcut const * const ks) {
+  if(ks->modifier != KS_NO_MODIFIER) {
+    Keyboard.release(ks->modifier);
+  }
+  if(ks->key != KS_INACTIVE) {
+    Keyboard.release(ks->key);
+  }
 }
 
 // set each param 0-100%
