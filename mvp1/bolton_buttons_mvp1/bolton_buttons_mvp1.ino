@@ -99,10 +99,7 @@ void loop() {
 
 void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
   // if this was a special key, fire the CB and return
-  //FIXME rm
-  Serial.printf("key event\n");
   if(b->special) {
-    Serial.println("Special key");
     return b->special(wasPress);
   }
 

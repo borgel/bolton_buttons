@@ -66,8 +66,8 @@ KeymapAssignment const keymapLayout[NUM_NORMAL_KEYS] = {
   //esc
   {"ESC",
     .press={KS_NO_MODIFIER, KEY_ESC, "ESC"},
-    .decrement={},
-    .increment={},
+    .decrement={MODIFIERKEY_CTRL, KEY_Z, "Undo"},
+    .increment={MODIFIERKEY_CTRL, KEY_Y, "Redo"},
   },
 
   //f1
@@ -78,36 +78,103 @@ KeymapAssignment const keymapLayout[NUM_NORMAL_KEYS] = {
   },
 
   //f2
+  {"Layer Swap",
+    .press={KS_NO_MODIFIER, KEY_V, "Layer Swap"},
+    .decrement={},
+    .increment={},
+  },
+  //f3
+  {"Trace",
+    .press={KS_NO_MODIFIER,       KEY_X, "Start Track"},    // start new trace
+    .decrement={MODIFIERKEY_CTRL, KEY_W, "Track Width -"},
+    .increment={KS_NO_MODIFIER,   KEY_W, "Track Width +"}, 
+  },
+  //f4
+  {"Move",
+    .press={KS_NO_MODIFIER,        KEY_M, "Move"},
+    .decrement={KS_NO_MODIFIER,    KEY_R, "Rotate+"},
+    .increment={MODIFIERKEY_SHIFT, KEY_R, "Rotate-"},
+  },
+  //f5
+  {"f5",
+    .press={},
+    .decrement={},
+    .increment={},
+  },
+  //f6
+  {"f6",
+    .press={KS_NO_MODIFIER, KEY_DELETE, "Delete"},
+    .decrement={},
+    .increment={},
+  },
+  //f7
+  {"Delete",
+    .press={KS_NO_MODIFIER,    KEY_F, "Flip"},
+    .decrement={},
+    .increment={},
+  },
+  //f8
+  {"Edit",
+    .press={KS_NO_MODIFIER,        KEY_E, "Edit"},
+    .decrement={},
+    .increment={},
+  },
 };
-KeymapAssignment keymapTest[NUM_NORMAL_KEYS] = {};
-/*
-KeymapAssignment keymapLayout[NUM_NORMAL_KEYS] = {
-  {-1,                  KEY_ESC, "ESC"},    //esc
-  {MODIFIERKEY_SHIFT,   KEY_N, "Grid -"},      //f1
-  {-1,                  KEY_V, "Layer Swap"},      //f2
-  {-1,                  KEY_X, "Start Track"},      //f3
-  {MODIFIERKEY_CTRL ,   KEY_W, "Track Width -"},   //f4
-  {-1,                  KEY_N, "Grid +"},   //f5
-  {-1,                  KEY_DELETE, "Delete"},   //f6
-  {-1,                  KEY_M, "Move"},   //f7
-  {-1,                  KEY_W, "Track Width +"},   //f8
+KeymapAssignment const keymapTest[NUM_NORMAL_KEYS] = {
+  {"ESC",
+    .press={KS_NO_MODIFIER, KEY_E, "ESC"},
+    .decrement={},
+    .increment={},
+  },
+
+  //f1
+  {"f1",
+    .press={KS_NO_MODIFIER, KEY_1, "1"},
+    .decrement={KS_NO_MODIFIER, KEY_1, "1-"},
+    .increment={KS_NO_MODIFIER, KEY_1, "1+"},
+  },
+  //f2
+  {"f2",
+    .press={KS_NO_MODIFIER, KEY_2, "2"},
+    .decrement={},
+    .increment={},
+  },
+  {"f3",
+    .press={KS_NO_MODIFIER, KEY_3, "3"},
+    .decrement={},
+    .increment={},
+  },
+  {"f4",
+    .press={KS_NO_MODIFIER, KEY_4, "4"},
+    .decrement={},
+    .increment={},
+  },
+  {"f5",
+    .press={KS_NO_MODIFIER, KEY_5, "5"},
+    .decrement={},
+    .increment={},
+  },
+  {"f6",
+    .press={KS_NO_MODIFIER, KEY_6, "6"},
+    .decrement={},
+    .increment={},
+  },
+  {"f7",
+    .press={KS_NO_MODIFIER, KEY_7, "7"},
+    .decrement={},
+    .increment={},
+  },
+  {"f8",
+    .press={KS_NO_MODIFIER, KEY_8, "8"},
+    .decrement={},
+    .increment={},
+  },
 };
-KeymapAssignment keymapTest[NUM_NORMAL_KEYS] = {
-  {-1,                  KEY_E, "ESC"},    //esc
-  {-1,                  KEY_1, "1"},     //f1
-  {-1,                  KEY_2, "2"},     //f2
-  {-1,                  KEY_3, "3"},     //f3
-  {-1,                  KEY_4, "4"},     //f4
-  {-1,                  KEY_5, "5"},     //f5
-  {-1,                  KEY_6, "6"},     //f6
-  {-1,                  KEY_7, "7"},     //f7
-  {-1,                  KEY_8, "8"},     //f8
-};
-*/
+
 
 // the master structure of maps
-  {"KiCAD: Schematic", NUM_NORMAL_KEYS, keymapTest},
 KeymapConfig const allKeymaps[] = {
+  {"KiCAD: Schematic", NUM_NORMAL_KEYS, keymapTest},
   {"KiCAD: Layout", NUM_NORMAL_KEYS, keymapLayout},
   {NULL},   // end flag
 };
