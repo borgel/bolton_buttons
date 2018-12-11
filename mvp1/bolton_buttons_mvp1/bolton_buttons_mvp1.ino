@@ -78,6 +78,8 @@ void loop() {
       keyPressEvent(&button_assignments[i], false);
     }
     else if(b->fell()) {
+      //FIXME rm
+      Serial.printf("evt press %d\n", i);
       keyPressEvent(&button_assignments[i], true);
     }
   }

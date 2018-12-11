@@ -32,7 +32,8 @@ ButtonAssignment button_assignments[NUM_BUTTONS] = {
   {8, 4, 2},   //4
   {9, 8, 1},   //8
   {10, 3,3},   //3
-  
+
+  // special keys should come after normal ones
   {16, -1, 0, modeButtonCB},  // bonus button
   {15, -1, 0, encoderButtonCB},  // encoder switch
 };
@@ -49,8 +50,8 @@ typedef struct {
 typedef struct {
   const char *name;
   KeyShortcut press;
-  KeyShortcut decrement;
-  KeyShortcut increment;
+  KeyShortcut const decrement;
+  KeyShortcut const increment;
 } KeymapAssignment;
 
 typedef struct {
@@ -61,7 +62,7 @@ typedef struct {
 
 // keymaps for each button. ORDER MATTERS! When a key is pressed above
 // it will index into this array and invoke a key
-KeymapAssignment keymapLayout[NUM_NORMAL_KEYS] = {
+KeymapAssignment const keymapLayout[NUM_NORMAL_KEYS] = {
   //esc
   {"ESC",
     .press={KS_NO_MODIFIER, KEY_ESC, "ESC"},
@@ -105,8 +106,8 @@ KeymapAssignment keymapTest[NUM_NORMAL_KEYS] = {
 */
 
 // the master structure of maps
-KeymapConfig allKeymaps[] = {
   {"KiCAD: Schematic", NUM_NORMAL_KEYS, keymapTest},
+KeymapConfig const allKeymaps[] = {
   {"KiCAD: Layout", NUM_NORMAL_KEYS, keymapLayout},
   {NULL},   // end flag
 };
