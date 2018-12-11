@@ -149,6 +149,17 @@ void knobEvent(bool const wasIncrement) {
       safeKeyboardRelease(&pressedKey->decrement);
     }
   }
+  else {
+    //TODO layout-based default
+    if(wasIncrement) {
+      Keyboard.press(KEY_DOWN);
+      Keyboard.release(KEY_DOWN);
+    }
+    else {
+      Keyboard.press(KEY_UP);
+      Keyboard.release(KEY_UP);
+    }
+  }
 }
 
 void modeButtonCB(bool const wasPress) {
