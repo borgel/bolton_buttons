@@ -112,7 +112,7 @@ void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
     // show rotate fxns on display
     display.clear();
     display.printf("%s\n", ka->name);
-    display.printf("Dec: %s\n", ka->increment.name);
+    display.printf("Dec: %s\n", ka->decrement.name);
     display.printf("Inc: %s\n", ka->increment.name);
     display.display();
 
@@ -152,14 +152,15 @@ void knobEvent(bool const wasIncrement) {
     }
   }
   else {
-    //TODO layout-based default
+    // layout-based default knob
+    KeymapAssignment const * const ka = &allKeymaps[currentKeyConfig].defaultKnob;
     if(wasIncrement) {
-      Keyboard.press(KEY_DOWN);
-      Keyboard.release(KEY_DOWN);
+      safeKeyboardPress(&ka->increment);
+      safeKeyboardRelease(&ka->increment);
     }
     else {
-      Keyboard.press(KEY_UP);
-      Keyboard.release(KEY_UP);
+      safeKeyboardPress(&ka->decrement);
+      safeKeyboardRelease(&ka->decrement);
     }
   }
 }

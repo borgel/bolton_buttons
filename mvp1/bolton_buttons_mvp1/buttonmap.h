@@ -54,12 +54,6 @@ typedef struct {
   KeyShortcut const increment;
 } KeymapAssignment;
 
-typedef struct {
-  const char *name;
-  int keymapLen;
-  KeymapAssignment const * const keymap;
-} KeymapConfig;
-
 // keymaps for each button. ORDER MATTERS! When a key is pressed above
 // it will index into this array and invoke a key
 KeymapAssignment const keymapLayout[NUM_NORMAL_KEYS] = {
@@ -171,10 +165,28 @@ KeymapAssignment const keymapTest[NUM_NORMAL_KEYS] = {
   },
 };
 
+typedef struct {
+  const char *name;
+  int keymapLen;
+  KeymapAssignment const * const keymap;
+  KeymapAssignment defaultKnob;
+} KeymapConfig;
+
+KeymapAssignment defaultDialLayout = {
+  "Dial Zoom", .press = {},
+  .decrement={KS_NO_MODIFIER,    KEY_F2, "Zoom Out"},
+  .increment={KS_NO_MODIFIER,    KEY_F1, "Zoom In"},
+};
+KeymapAssignment defaultDialIdle = {
+  "Dial Zoom", .press = {},
+  .decrement={KS_NO_MODIFIER,    KEY_UP, "Scroll Up"},
+  .increment={KS_NO_MODIFIER,    KEY_DOWN, "Scroll Down"},
+};
 
 // the master structure of maps
 KeymapConfig const allKeymaps[] = {
-  {"KiCAD: Schematic", NUM_NORMAL_KEYS, keymapTest},
-  {"KiCAD: Layout", NUM_NORMAL_KEYS, keymapLayout},
+  {"KiCAD: Schematic", NUM_NORMAL_KEYS, keymapTest, defaultDialLayout},
+  {"KiCAD: Layout", NUM_NORMAL_KEYS, keymapLayout, defaultDialLayout},
+  {"Idle", 0, keymapLayout, defaultDialIdle},
   {NULL},   // end flag
 };
