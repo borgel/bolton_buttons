@@ -85,9 +85,9 @@ KeymapAssignment const keymapLayout[NUM_NORMAL_KEYS] = {
   },
   //f3
   {"Trace",
-    .press={KS_NO_MODIFIER,       KEY_X, "Start Track"},    // start new trace
-    .decrement={MODIFIERKEY_CTRL, KEY_W, "Track Width -"},
-    .increment={KS_NO_MODIFIER,   KEY_W, "Track Width +"}, 
+    .press={KS_NO_MODIFIER,        KEY_X, "Start Track"},    // start new trace
+    .decrement={MODIFIERKEY_CTRL,  KEY_W, "Track Width -"},
+    .increment={KS_NO_MODIFIER,    KEY_W, "Track Width +"}, 
   },
   //f4
   {"Move",
@@ -97,9 +97,9 @@ KeymapAssignment const keymapLayout[NUM_NORMAL_KEYS] = {
   },
   //f5
   {"Recenter",
-    .press={},
-    .decrement={},
-    .increment={},
+    .press={KS_NO_MODIFIER,        KEY_HOME, "Home"},
+    .decrement={KS_NO_MODIFIER,    KEY_F2, "Zoom Out"},
+    .increment={KS_NO_MODIFIER,    KEY_F1, "Zoom In"},
   },
   //f6
   {"f6",
