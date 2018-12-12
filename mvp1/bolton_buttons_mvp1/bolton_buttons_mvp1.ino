@@ -104,7 +104,7 @@ void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
   // normal key
   KeymapAssignment const * const ka = getKeymappingForKey(b);
   if(wasPress) {
-    strip.setPixelColor(b->ledIndex, 255, 127, 0);
+    //strip.setPixelColor(b->ledIndex, 255, 127, 0);
     setKnobLED(rand() % 100, rand() % 100, rand() % 100);
     
     safeKeyboardPress(&ka->press);
