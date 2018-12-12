@@ -96,7 +96,7 @@ KeymapAssignment const keymapLayout[NUM_NORMAL_KEYS] = {
     .increment={MODIFIERKEY_SHIFT, KEY_R, "Rotate-"},
   },
   //f5
-  {"f5",
+  {"Recenter",
     .press={},
     .decrement={},
     .increment={},

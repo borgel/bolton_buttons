@@ -78,8 +78,6 @@ void loop() {
       keyPressEvent(&button_assignments[i], false);
     }
     else if(b->fell()) {
-      //FIXME rm
-      Serial.printf("evt press %d\n", i);
       keyPressEvent(&button_assignments[i], true);
     }
   }
@@ -113,6 +111,7 @@ void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
 
     // show rotate fxns on display
     display.clear();
+    display.printf("%s\n", ka->name);
     display.printf("Dec: %s\n", ka->increment.name);
     display.printf("Inc: %s\n", ka->increment.name);
     display.display();
@@ -195,9 +194,12 @@ void switchKeyconfig() {
   // now do whatever to init this map
   display.clear();
   displayKeymapName();
+  //TODO display in a grid
+  /*
   for(int i = 0; i < kc->keymapLen; i++) {
     display.printf("%d:%s\n", i, kc->keymap[i].name);
   }
+  */
   display.display();
 }
 
