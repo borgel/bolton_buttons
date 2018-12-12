@@ -137,6 +137,9 @@ void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
 
 void knobEvent(bool const wasIncrement) {
   if(pressedKey) {
+    // release this key's pressed state
+    safeKeyboardRelease(&pressedKey->press);
+    
     if(wasIncrement){
       safeKeyboardPress(&pressedKey->increment);
       //TODO need delay?
