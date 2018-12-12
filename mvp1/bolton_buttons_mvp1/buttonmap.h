@@ -72,7 +72,7 @@ KeymapAssignment const keymapLayout[NUM_NORMAL_KEYS] = {
 
   //f1
   {"Grid",
-    .press={},
+    .press={KS_NO_MODIFIER,        KEY_HOME, "Home"},
     .decrement={MODIFIERKEY_SHIFT, KEY_N, "Grid -"},
     .increment={KS_NO_MODIFIER,    KEY_N, "Grid +"},
   },
@@ -97,12 +97,12 @@ KeymapAssignment const keymapLayout[NUM_NORMAL_KEYS] = {
   },
   //f5
   {"Recenter",
-    .press={KS_NO_MODIFIER,        KEY_HOME, "Home"},
+    .press={MODIFIERKEY_CTRL,      KEY_F5, "Region Zoom"},
     .decrement={KS_NO_MODIFIER,    KEY_F2, "Zoom Out"},
     .increment={KS_NO_MODIFIER,    KEY_F1, "Zoom In"},
   },
   //f6
-  {"f6",
+  {"Delete",
     .press={KS_NO_MODIFIER, KEY_DELETE, "Delete"},
     .decrement={},
     .increment={},
