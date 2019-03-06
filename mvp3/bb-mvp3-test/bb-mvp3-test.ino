@@ -1,6 +1,7 @@
 
 #include <i2c_t3.h>
 #include "TCA9555.h"
+#include <Encoder.h>
 
 // bits a2, a1, a0
 TCA9555 tca9555(1,0,0);
@@ -9,6 +10,12 @@ uint16_t lastButtonMask = 0x0;
 
 //teensy pin 13 LED (active low)
 //expander P17 status LED (active low)
+
+// all the knobs
+static Encoder knob1(11, 10);
+static Encoder knob2(9, 8);
+static Encoder knob3(7, 6);
+static Encoder knob4(5, 4);
 
 void setup() {
   pinMode(13, OUTPUT);
@@ -39,14 +46,22 @@ bool t = false;
 void loop() {
   //port 0
   Serial.println(lastButtonMask, HEX);
-  delay(1000);
 
   tca9555.setOutputStates(1, t << 7);
+
+  Serial.printf("%d %d %d %d\n",
+    knob1.read(),
+    knob2.read(),
+    knob3.read(),
+    knob4.read()
+    );
   
   digitalWrite(13, t);
   t = !t;
+  
+  delay(1000);
 }
 
 void buttonChangeISR() {
-  lastButtonMask = tca9555.getInputStates();
+  lastButtonMask = 0x7FFF & tca9555.getInputStates();
 }
