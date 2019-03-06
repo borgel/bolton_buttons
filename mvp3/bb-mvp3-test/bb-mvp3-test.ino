@@ -14,9 +14,16 @@ void setup() {
 
   Wire1.begin();
 
+  // IO expander interrupt port
+  pinMode(2, INPUT);
+
   // setup IO expander
   // each port all inputs, except last bit of second
-  tca9555.setPortDirection(TCA9555::DIR_OUTPUT);
+  // port 0. bit set to 1 is input
+  tca9555.setPortDirection(0, 0xFF);
+  tca9555.setOutputStates(0, 0xFF);
+  
+  //tca9555.setPortDirection(1, ~((byte)(1 << 7)));
   
   // wait for USB enumeration
   delay(2000);
@@ -29,7 +36,8 @@ void setup() {
 
 bool t = false;
 void loop() {
-  Serial.print(tca9555.getInputStates());
+  //port 0
+  Serial.println(tca9555.getInputStates(0), HEX);
   delay(1000);
 
   tca9555.setOutputStates(1, t << 7);
