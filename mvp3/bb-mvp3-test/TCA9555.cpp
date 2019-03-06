@@ -6,7 +6,7 @@
 */
 
 #include "TCA9555.h"
-#include <Wire.h>
+#include <i2c_t3.h>
 
 //a2, a1 and a0 are the address pin states
 //they can be either 0 or 1 (low or high)
@@ -25,41 +25,41 @@ TCA9555::TCA9555(byte a2, byte a1, byte a0)
 //dir: DIR_OUTPUT or DIR_INPUT
 void TCA9555::setPortDirection(byte dir)
 {
-  Wire.beginTransmission(I2CAddr);
-  Wire.send(CR_CFG0);
-  Wire.send(dir);
-  Wire.send(dir);
-  Wire.endTransmission();	
+  Wire1.beginTransmission(I2CAddr);
+  Wire1.send(CR_CFG0);
+  Wire1.send(dir);
+  Wire1.send(dir);
+  Wire1.endTransmission();	
 }
 
 //portNum: PORT_0 or PORT_1
 void TCA9555::setPortDirection(byte portNum, byte dir)
 {
-  Wire.beginTransmission(I2CAddr);
-  if (portNum == PORT_0) Wire.send(CR_CFG0);
-  else Wire.send(CR_CFG1);
-  Wire.send(dir);
-  Wire.endTransmission();
+  Wire1.beginTransmission(I2CAddr);
+  if (portNum == PORT_0) Wire1.send(CR_CFG0);
+  else Wire1.send(CR_CFG1);
+  Wire1.send(dir);
+  Wire1.endTransmission();
 }
 
 //set port polarity for both ports
 //polarity: POLARITY_NORMAL or POLARITY_INV
 void TCA9555::setPortPolarity(byte polarity)
 {
-  Wire.beginTransmission(I2CAddr);
-  Wire.send(CR_INV0);
-  Wire.send(polarity);
-  Wire.send(polarity);
-  Wire.endTransmission();
+  Wire1.beginTransmission(I2CAddr);
+  Wire1.send(CR_INV0);
+  Wire1.send(polarity);
+  Wire1.send(polarity);
+  Wire1.endTransmission();
 }
 
 void TCA9555::setPortPolarity(byte portNum, byte polarity)
 {
-  Wire.beginTransmission(I2CAddr);
-  if (portNum == PORT_0) Wire.send(CR_INV0);
-  else Wire.send(CR_INV1);
-  Wire.send(polarity);
-  Wire.endTransmission();
+  Wire1.beginTransmission(I2CAddr);
+  if (portNum == PORT_0) Wire1.send(CR_INV0);
+  else Wire1.send(CR_INV1);
+  Wire1.send(polarity);
+  Wire1.endTransmission();
 }
 
 //set output states when both ports are used as output ports
@@ -69,20 +69,20 @@ void TCA9555::setOutputStates(word w)
   byte low_byte = w & 0xff;
   byte high_byte = (w & 0xff00) >> 8;
 
-  Wire.beginTransmission(I2CAddr);
-  Wire.send(CR_OUT0);
-  Wire.send(low_byte);
-  Wire.send(high_byte);
-  Wire.endTransmission();
+  Wire1.beginTransmission(I2CAddr);
+  Wire1.send(CR_OUT0);
+  Wire1.send(low_byte);
+  Wire1.send(high_byte);
+  Wire1.endTransmission();
 }
 
 void TCA9555::setOutputStates(byte portNum, byte b)
 {
-  Wire.beginTransmission(I2CAddr);
-  if (portNum == PORT_0) Wire.send(CR_OUT0);
-  else Wire.send(CR_OUT1);
-  Wire.send(b);
-  Wire.endTransmission();
+  Wire1.beginTransmission(I2CAddr);
+  if (portNum == PORT_0) Wire1.send(CR_OUT0);
+  else Wire1.send(CR_OUT1);
+  Wire1.send(b);
+  Wire1.endTransmission();
 }
 
 //returns the input states of both ports when ports
@@ -91,15 +91,15 @@ word TCA9555::getInputStates()
 {
   byte low_byte, high_byte;
 
-  Wire.beginTransmission(I2CAddr);
-  Wire.requestFrom(I2CAddr, 2u);
+  Wire1.beginTransmission(I2CAddr);
+  Wire1.requestFrom(I2CAddr, 2u);
 
-  while (!Wire.available()) {};
-  low_byte = Wire.receive();
-  while (!Wire.available()) {};
-  high_byte = Wire.receive();
+  while (!Wire1.available()) {};
+  low_byte = Wire1.receive();
+  while (!Wire1.available()) {};
+  high_byte = Wire1.receive();
 
-  Wire.endTransmission();
+  Wire1.endTransmission();
   
   word w = low_byte | (high_byte << 8);
   
