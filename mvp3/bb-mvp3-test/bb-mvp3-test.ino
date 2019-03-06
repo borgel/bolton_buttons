@@ -5,6 +5,8 @@
 // bits a2, a1, a0
 TCA9555 tca9555(1,0,0);
 
+uint16_t lastButtonMask = 0x0;
+
 //teensy pin 13 LED (active low)
 //expander P17 status LED (active low)
 
@@ -16,6 +18,7 @@ void setup() {
 
   // IO expander interrupt port
   pinMode(2, INPUT);
+  attachInterrupt(2, buttonChangeISR, FALLING);
 
   // setup IO expander
   // each port all inputs, except last bit of second
@@ -35,11 +38,15 @@ void setup() {
 bool t = false;
 void loop() {
   //port 0
-  Serial.println(tca9555.getInputStates(), HEX);
+  Serial.println(lastButtonMask, HEX);
   delay(1000);
 
   tca9555.setOutputStates(1, t << 7);
   
   digitalWrite(13, t);
   t = !t;
+}
+
+void buttonChangeISR() {
+  lastButtonMask = tca9555.getInputStates();
 }
