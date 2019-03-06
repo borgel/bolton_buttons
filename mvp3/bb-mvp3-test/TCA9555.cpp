@@ -92,7 +92,11 @@ word TCA9555::getInputStates()
   byte low_byte, high_byte;
 
   Wire1.beginTransmission(I2CAddr);
-  Wire1.requestFrom(I2CAddr, 2u);
+  Wire1.send(0x0);
+  Wire1.endTransmission(I2C_NOSTOP);
+  
+  // request read 2 bytes
+  Wire1.requestFrom(I2CAddr, 2u, I2C_STOP);
 
   while (!Wire1.available()) {};
   low_byte = Wire1.receive();
