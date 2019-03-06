@@ -21,9 +21,7 @@ void setup() {
   // each port all inputs, except last bit of second
   // port 0. bit set to 1 is input
   tca9555.setPortDirection(0, 0xFF);
-  tca9555.setOutputStates(0, 0xFF);
-  
-  //tca9555.setPortDirection(1, ~((byte)(1 << 7)));
+  tca9555.setPortDirection(1, ~((byte)(1 << 7)));
   
   // wait for USB enumeration
   delay(2000);
@@ -37,7 +35,7 @@ void setup() {
 bool t = false;
 void loop() {
   //port 0
-  Serial.println(tca9555.getInputStates(0), HEX);
+  Serial.println(tca9555.getInputStates(), HEX);
   delay(1000);
 
   tca9555.setOutputStates(1, t << 7);
