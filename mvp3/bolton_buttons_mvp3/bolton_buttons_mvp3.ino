@@ -1,11 +1,8 @@
-
+#include "TCA9555.h"
 
 #include <Adafruit_DotStar.h>
 #include <Bounce2.h>
 #include <SPI.h>
-#include <Wire.h>
-
-#include <oled.h>
 
 #include <usb_keyboard.h>
 #include <Encoder.h>
@@ -14,11 +11,6 @@
 #include "buttonmap.h"
 
 static int currentKeyConfig = 0;
-
-//TODO package
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 32 // OLED display height, in pixels
-OLED display = OLED(23, 22 ,NO_RESET_PIN,0x3C,SCREEN_WIDTH,SCREEN_HEIGHT, true);
 
 // TODO package
 static Adafruit_DotStar strip = Adafruit_DotStar(9, 12, 14, DOTSTAR_BRG);
@@ -47,11 +39,6 @@ void setup() {
 
   strip.begin();
   strip.show();
-
-  //setup display
-  display.begin();
-  display.print("Potato Is Nice");
-  display.display();
   
   switchKeyconfig();
 
@@ -109,13 +96,6 @@ void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
     
     safeKeyboardPress(&ka->press);
 
-    // show rotate fxns on display
-    display.clear();
-    display.printf("%s\n", ka->name);
-    display.printf("Dec: %s\n", ka->decrement.name);
-    display.printf("Inc: %s\n", ka->increment.name);
-    display.display();
-
     // mark this key as being pressed
     pressedKey = ka;
   }
@@ -124,10 +104,6 @@ void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
     setKnobLEDWhite(0);
     
     safeKeyboardRelease(&ka->press);
-    
-    display.clear();
-    displayKeymapName();
-    display.display();
 
     // unmark this key as being pressed
     pressedKey = NULL;
@@ -194,22 +170,6 @@ void switchKeyconfig() {
 
   KeymapConfig const * const kc = &allKeymaps[currentKeyConfig];
   Serial.printf("Selected keymap to %d (%s)\n", currentKeyConfig, kc->name);
-
-  // now do whatever to init this map
-  display.clear();
-  displayKeymapName();
-  //TODO display in a grid
-  /*
-  for(int i = 0; i < kc->keymapLen; i++) {
-    display.printf("%d:%s\n", i, kc->keymap[i].name);
-  }
-  */
-  display.display();
-}
-
-void displayKeymapName() {
-  KeymapConfig const * const kc = &allKeymaps[currentKeyConfig];
-  display.printf("%s\n", kc->name);
 }
 
 // perform all safety checks and press or release a key with modifiers
