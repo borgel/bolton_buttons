@@ -35,11 +35,11 @@ public:
 	TCA9555(byte a2, byte a1, byte a0);
 	void setPortDirection(byte dir);
 	void setPortDirection(byte portNum, byte dir);
-        void setPortPolarity(byte polarity);
-        void setPortPolarity(byte portNum, byte polarity);
+  void setPortPolarity(byte polarity);
+  void setPortPolarity(byte portNum, byte polarity);
 	void setOutputStates(word w);
 	void setOutputStates(byte portNum, byte b);
-	word getInputStates();
+	uint16_t getInputStates();
 	byte getInputStates(byte portNum);
 
 	void pinMode(byte pinNum, byte dir);

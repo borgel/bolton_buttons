@@ -7,6 +7,7 @@
 
 #include "TCA9555.h"
 #include <i2c_t3.h>
+#include <stdint.h>
 
 //a2, a1 and a0 are the address pin states
 //they can be either 0 or 1 (low or high)
@@ -87,7 +88,7 @@ void TCA9555::setOutputStates(byte portNum, byte b)
 
 //returns the input states of both ports when ports
 //are used as inputs
-word TCA9555::getInputStates()
+uint16_t TCA9555::getInputStates()
 {
   byte low_byte, high_byte;
 
@@ -105,7 +106,7 @@ word TCA9555::getInputStates()
 
   Wire1.endTransmission();
   
-  word w = low_byte | (high_byte << 8);
+  uint16_t w = low_byte | (high_byte << 8);
   
   return w;
 }
