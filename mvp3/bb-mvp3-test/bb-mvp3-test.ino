@@ -2,11 +2,14 @@
 #include <i2c_t3.h>
 #include "TCA9555.h"
 #include <Encoder.h>
+#include <Adafruit_DotStar.h>
 
 // bits a2, a1, a0
 TCA9555 tca9555(1,0,0);
 
 uint16_t lastButtonMask = 0x0;
+
+static Adafruit_DotStar strip = Adafruit_DotStar(3, 12, 14, DOTSTAR_BRG);
 
 //teensy pin 13 LED (active low)
 //expander P17 status LED (active low)
@@ -20,6 +23,11 @@ static Encoder knob4(5, 4);
 void setup() {
   pinMode(13, OUTPUT);
   digitalWrite(13, LOW);
+  
+  // wait for USB enumeration
+  delay(2000);
+  Serial.begin(9600);
+  Serial.println("Booted...");
 
   Wire1.begin();
 
@@ -33,10 +41,12 @@ void setup() {
   tca9555.setPortDirection(0, 0xFF);
   tca9555.setPortDirection(1, ~((byte)(1 << 7)));
   
-  // wait for USB enumeration
-  delay(2000);
-  Serial.begin(9600);
-  Serial.println("Booted...");
+  strip.begin();
+  strip.show();
+  strip.setPixelColor(0, 127, 127, 127);
+  strip.setPixelColor(1, 127, 255, 127);
+  strip.setPixelColor(2, 255, 127, 127);
+  strip.show();
 
   Serial.println("Done with setup");
   digitalWrite(13, HIGH);
