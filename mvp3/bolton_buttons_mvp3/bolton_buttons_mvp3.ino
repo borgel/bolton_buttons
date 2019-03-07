@@ -21,6 +21,13 @@ static Bounce * buttonBouncers = new Bounce[NUM_DIRECT_BUTTONS];
 //static Encoder knob4(5, 4);
 
 static SmartKnob knob1(11, 10);
+//static SmartKnob * knobs = new SmartKnob[NUM_KNOBS];
+static SmartKnob knobs[NUM_KNOBS] = {
+  SmartKnob(11, 10),
+  SmartKnob(9, 8),
+  SmartKnob(7, 6),
+  SmartKnob(5, 4),
+};
 
 static KeymapAssignment const * pressedKey;
 
@@ -30,7 +37,7 @@ void setup() {
   Serial.begin(9600);
   Serial.println("Booted...");
 
-  // attach bouncer to all buttons
+  // attach bouncer to all directly connected buttons
   ButtonAssignment *ba;
   for(int i = 0; i < NUM_DIRECT_BUTTONS; i++) {
     ba = &button_assignments[i];
@@ -67,8 +74,16 @@ void loop() {
 
   // look for a knob change and dispatch events
   //TODO iterate through knobs and look for change
+  /*
   if(knob1.didChange()) {
     Serial.println("changed");
+  }
+  */
+  for(int i = 0; i < NUM_KNOBS; i++) {
+    SmartKnob * k = &knobs[i];
+    if(k->didChange()) {
+      Serial.printf("k%d change\n", i);
+    }
   }
   /*
   if(knob.read() != lastKnob) {

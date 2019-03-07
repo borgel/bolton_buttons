@@ -13,7 +13,6 @@ public:
 
 private:
   // gets re-init later on construction of SmartKnob
-  //Encoder knob = Encoder(0, 0);
   Encoder knob;
 
   long lastPosition;
