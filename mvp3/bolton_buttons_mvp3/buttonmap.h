@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 // 9 keys (including esc)
-#define NUM_DIRECT_BUTTONS 4  // buttons connected directly to the teensy
+#define NUM_DIRECT_BUTTONS 5  // buttons connected directly to the teensy
 #define NUM_INDIRECT_BUTTONS 12 // buttons on the IO expander
 #define NUM_KNOBS 4
 
@@ -28,6 +28,7 @@ ButtonAssignment button_assignments[NUM_DIRECT_BUTTONS] = {
   {16, 1},   //knob 2
   {17, 2},   //knob 3
   {18, 3},   //knob 4
+  {19, 4},   //big center
 };
 
 #define KS_INACTIVE (0)
