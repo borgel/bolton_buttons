@@ -170,6 +170,10 @@ void switchKeyconfig() {
 
 // perform all safety checks and press or release a key with modifiers
 void safeKeyboardPress(KeyShortcut const * const ks) {
+  //FIXME rm
+  Serial.printf("PKey %d\n", ks->key);
+  return;
+  
   if(ks->modifier != KS_NO_MODIFIER) {
     Keyboard.press(ks->modifier);
   }
@@ -177,6 +181,10 @@ void safeKeyboardPress(KeyShortcut const * const ks) {
     Keyboard.press(ks->key);
   }
 }void safeKeyboardRelease(KeyShortcut const * const ks) {
+  //FIXME rm
+  Serial.printf("RKey %d\n", ks->key);
+  return;
+  
   if(ks->modifier != KS_NO_MODIFIER) {
     Keyboard.release(ks->modifier);
   }

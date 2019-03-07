@@ -25,9 +25,9 @@ typedef struct {
 ButtonAssignment button_assignments[NUM_DIRECT_BUTTONS] = {
   //pin, keymap index, related LED chain offset
   {15, 0},   //knob 1
-  {16, 0},   //knob 2
-  {17, 0},   //knob 3
-  {18, 0},   //knob 4
+  {16, 1},   //knob 2
+  {17, 2},   //knob 3
+  {18, 3},   //knob 4
 };
 
 #define KS_INACTIVE (0)
