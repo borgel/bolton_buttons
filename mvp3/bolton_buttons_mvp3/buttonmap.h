@@ -22,7 +22,7 @@ typedef struct {
 } ButtonAssignment;
 
 // TODO separate pin from key
-ButtonAssignment button_assignments[NUM_DIRECT_BUTTONS] = {
+ButtonAssignment const button_assignments[NUM_DIRECT_BUTTONS] = {
   //pin, keymap index, related LED chain offset
   {15, 0},   //knob 1
   {16, 1},   //knob 2
@@ -165,12 +165,12 @@ typedef struct {
   KeymapAssignment defaultKnob;
 } KeymapConfig;
 
-KeymapAssignment defaultDialLayout = {
+KeymapAssignment const defaultDialLayout = {
   "Dial Zoom", .press = {},
   .decrement={KS_NO_MODIFIER,    KEY_F2, "Zoom Out"},
   .increment={KS_NO_MODIFIER,    KEY_F1, "Zoom In"},
 };
-KeymapAssignment defaultDialIdle = {
+KeymapAssignment const defaultDialIdle = {
   "Dial Zoom", .press = {},
   .decrement={KS_NO_MODIFIER,    KEY_UP, "Scroll Up"},
   .increment={KS_NO_MODIFIER,    KEY_DOWN, "Scroll Down"},
