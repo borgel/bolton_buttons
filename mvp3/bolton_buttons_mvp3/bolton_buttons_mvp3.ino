@@ -5,18 +5,22 @@
 #include <SPI.h>
 
 #include <usb_keyboard.h>
-#include <Encoder.h>
-#include "SoftPWM.h"
+#include "SmartKnob.h"
 
 #include "buttonmap.h"
 
 static int currentKeyConfig = 0;
 
 // TODO package
-static Adafruit_DotStar strip = Adafruit_DotStar(9, 12, 14, DOTSTAR_BRG);
+static Adafruit_DotStar strip = Adafruit_DotStar(3, 12, 14, DOTSTAR_BRG);
 static Bounce * buttonBouncers = new Bounce[NUM_BUTTONS];
 
-static Encoder knob(20, 21);
+//static Encoder knob1(11, 10);
+//static Encoder knob2(9, 8);
+//static Encoder knob3(7, 6);
+//static Encoder knob4(5, 4);
+
+static SmartKnob knob1(11, 10);
 
 static KeymapAssignment const * pressedKey;
 
@@ -25,7 +29,8 @@ void setup() {
   delay(1000);
   Serial.begin(9600);
   Serial.println("Booted...");
-  
+
+  /*
   // attach bouncer to all buttons
   ButtonAssignment *ba;
   for(int i = 0; i < NUM_BUTTONS; i++) {
@@ -36,19 +41,12 @@ void setup() {
     
     Serial.printf("Attached button on pin %d\n", ba->pin);
   }
+  */
 
   strip.begin();
   strip.show();
   
   switchKeyconfig();
-
-  // knob LEDs
-  SoftPWMBegin(SOFTPWM_INVERTED);
-  SoftPWMSet(17, 0);
-  SoftPWMSet(18, 0);
-  SoftPWMSet(19, 0);
-  SoftPWMSetFadeTime(ALL, 100, 100);
-  setKnobLEDWhite(0);
 
   Serial.println("Done with setup");
 }
@@ -57,7 +55,8 @@ static long lastKnob = 0;
 void loop() {
   //check for key flags, and send data
   // set the knob IO to low for just a moment to sense
-  
+
+  /*
   for(int i = 0; i < NUM_BUTTONS; i++) {
     Bounce * b = &buttonBouncers[i];
     b->update();
@@ -68,8 +67,14 @@ void loop() {
       keyPressEvent(&button_assignments[i], true);
     }
   }
+  */
 
   // look for a knob change and dispatch events
+  //TODO iterate through knobs and look for change
+  if(knob1.didChange()) {
+    Serial.println("changed");
+  }
+  /*
   if(knob.read() != lastKnob) {
     long prevKnob = lastKnob;
     lastKnob = knob.read();
@@ -80,6 +85,7 @@ void loop() {
       knobEvent(lastKnob - prevKnob < 0);
     }
   }
+  */
 }
 
 void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
@@ -91,18 +97,12 @@ void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
   // normal key
   KeymapAssignment const * const ka = getKeymappingForKey(b);
   if(wasPress) {
-    //strip.setPixelColor(b->ledIndex, 255, 127, 0);
-    setKnobLED(rand() % 100, rand() % 100, rand() % 100);
-    
     safeKeyboardPress(&ka->press);
 
     // mark this key as being pressed
     pressedKey = ka;
   }
   else {
-    strip.setPixelColor(b->ledIndex, 0, 0, 0);
-    setKnobLEDWhite(0);
-    
     safeKeyboardRelease(&ka->press);
 
     // unmark this key as being pressed
@@ -187,14 +187,4 @@ void safeKeyboardPress(KeyShortcut const * const ks) {
   if(ks->key != KS_INACTIVE) {
     Keyboard.release(ks->key);
   }
-}
-
-// set each param 0-100%
-void setKnobLED(uint8_t r, uint8_t g, uint8_t b) {
-  SoftPWMSetPercent(17, r);
-  SoftPWMSetPercent(18, g);
-  SoftPWMSetPercent(19, b);
-}
-void setKnobLEDWhite(uint8_t level) {
-  setKnobLED(level, level, level);
 }

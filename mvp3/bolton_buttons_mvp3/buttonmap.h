@@ -16,26 +16,16 @@ void encoderButtonCB(bool const wasPress);
 typedef struct {
   int pin;
   int assignmentMapIndex;     // this order matters! do not change it casually!
-  int ledIndex;
   specialCallback special;
 } ButtonAssignment;
 
 // TODO separate pin from key
 ButtonAssignment button_assignments[NUM_BUTTONS] = {
   //pin, keymap index, related LED chain offset
-  {2, 5, 7},   //5
-  {3, 7, 0},   //7
-  {4, 6, 6},   //6
-  {5, 2, 5},   //2
-  {6, 0, 0},   //esc
-  {7, 1, 8},   //1
-  {8, 4, 2},   //4
-  {9, 8, 1},   //8
-  {10, 3,3},   //3
-
-  // special keys should come after normal ones
-  {16, -1, 0, modeButtonCB},  // bonus button
-  {15, -1, 0, encoderButtonCB},  // encoder switch
+  {15, 5},   //knob 1
+  {16, 7},   //knob 2
+  {17, 6},   //knob 3
+  {18, 2},   //knob 4
 };
 
 #define KS_INACTIVE (0)
