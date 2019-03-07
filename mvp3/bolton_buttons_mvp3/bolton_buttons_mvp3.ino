@@ -1,10 +1,11 @@
-#include "TCA9555.h"
+#include <i2c_t3.h>
 
 #include <Adafruit_DotStar.h>
 #include <Bounce2.h>
 #include <SPI.h>
 
 #include <usb_keyboard.h>
+#include "ExpanderButton.h"
 #include "SmartKnob.h"
 
 #include "buttonmap.h"
@@ -31,7 +32,7 @@ void setup() {
   Serial.println("Booted...");
 
   // attach bouncer to all directly connected buttons
-  ButtonAssignment *ba;
+  ButtonAssignment const *ba;
   for(int i = 0; i < NUM_DIRECT_BUTTONS; i++) {
     ba = &button_assignments[i];
 
@@ -44,15 +45,20 @@ void setup() {
   strip.begin();
   strip.show();
   
+  Wire1.begin();
+  ep_Init(2, expandedKeyPress);
+
+  // init keymaps and state vars
   switchKeyconfig();
 
   Serial.println("Done with setup");
 }
 
 void loop() {
-  //check for key flags, and send data
-  // set the knob IO to low for just a moment to sense
+  // let the IO expander check for changes
+  ep_HandleChanges();
 
+  // handle all directly connected buttons
   for(int i = 0; i < NUM_DIRECT_BUTTONS; i++) {
     Bounce * b = &buttonBouncers[i];
     b->update();
@@ -73,6 +79,11 @@ void loop() {
       knobEvent(k->getChange() < 0);
     }
   }
+}
+
+// invoked every time a button on the IO expander changes
+void expandedKeyPress(uint8_t const pin, bool const wasPress) {
+  Serial.printf("Exp Btn %d press? %d\n", pin, wasPress);
 }
 
 void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
@@ -97,6 +108,7 @@ void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
   }
   strip.show();
 }
+
 
 void knobEvent(bool const wasIncrement) {
   if(pressedKey) {
