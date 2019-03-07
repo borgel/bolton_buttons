@@ -15,13 +15,6 @@ static int currentKeyConfig = 0;
 static Adafruit_DotStar strip = Adafruit_DotStar(3, 12, 14, DOTSTAR_BRG);
 static Bounce * buttonBouncers = new Bounce[NUM_DIRECT_BUTTONS];
 
-//static Encoder knob1(11, 10);
-//static Encoder knob2(9, 8);
-//static Encoder knob3(7, 6);
-//static Encoder knob4(5, 4);
-
-static SmartKnob knob1(11, 10);
-//static SmartKnob * knobs = new SmartKnob[NUM_KNOBS];
 static SmartKnob knobs[NUM_KNOBS] = {
   SmartKnob(11, 10),
   SmartKnob(9, 8),
@@ -56,7 +49,6 @@ void setup() {
   Serial.println("Done with setup");
 }
 
-static long lastKnob = 0;
 void loop() {
   //check for key flags, and send data
   // set the knob IO to low for just a moment to sense
@@ -76,22 +68,11 @@ void loop() {
   for(int i = 0; i < NUM_KNOBS; i++) {
     SmartKnob * k = &knobs[i];
     if(k->didChange()) {
-      Serial.printf("k%d changed by %d\n", i, k->getChange());
+      Serial.printf("k%d change\n", i);
       
-      //knobEvent(lastKnob - prevKnob < 0);
+      knobEvent(k->getChange() < 0);
     }
   }
-  /*
-  if(knob.read() != lastKnob) {
-    long prevKnob = lastKnob;
-    lastKnob = knob.read();
-
-    // only dispatch an event on %4 (that matches the HW detents)
-    if(lastKnob % 4 == 0) {
-      // clockwise is more negative
-    }
-  }
-  */
 }
 
 void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
