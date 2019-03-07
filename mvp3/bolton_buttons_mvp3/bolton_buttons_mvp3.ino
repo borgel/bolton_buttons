@@ -73,16 +73,12 @@ void loop() {
   }
 
   // look for a knob change and dispatch events
-  //TODO iterate through knobs and look for change
-  /*
-  if(knob1.didChange()) {
-    Serial.println("changed");
-  }
-  */
   for(int i = 0; i < NUM_KNOBS; i++) {
     SmartKnob * k = &knobs[i];
     if(k->didChange()) {
-      Serial.printf("k%d change\n", i);
+      Serial.printf("k%d changed by %d\n", i, k->getChange());
+      
+      //knobEvent(lastKnob - prevKnob < 0);
     }
   }
   /*
@@ -93,7 +89,6 @@ void loop() {
     // only dispatch an event on %4 (that matches the HW detents)
     if(lastKnob % 4 == 0) {
       // clockwise is more negative
-      knobEvent(lastKnob - prevKnob < 0);
     }
   }
   */
