@@ -13,7 +13,7 @@ static int currentKeyConfig = 0;
 
 // TODO package
 static Adafruit_DotStar strip = Adafruit_DotStar(3, 12, 14, DOTSTAR_BRG);
-static Bounce * buttonBouncers = new Bounce[NUM_BUTTONS];
+static Bounce * buttonBouncers = new Bounce[NUM_DIRECT_BUTTONS];
 
 //static Encoder knob1(11, 10);
 //static Encoder knob2(9, 8);
@@ -30,18 +30,16 @@ void setup() {
   Serial.begin(9600);
   Serial.println("Booted...");
 
-  /*
   // attach bouncer to all buttons
   ButtonAssignment *ba;
-  for(int i = 0; i < NUM_BUTTONS; i++) {
+  for(int i = 0; i < NUM_DIRECT_BUTTONS; i++) {
     ba = &button_assignments[i];
 
     buttonBouncers[i].attach(ba->pin, INPUT_PULLUP);
     buttonBouncers[i].interval(40);
     
-    Serial.printf("Attached button on pin %d\n", ba->pin);
+    Serial.printf("Attached button on direct pin %d\n", ba->pin);
   }
-  */
 
   strip.begin();
   strip.show();
@@ -56,8 +54,7 @@ void loop() {
   //check for key flags, and send data
   // set the knob IO to low for just a moment to sense
 
-  /*
-  for(int i = 0; i < NUM_BUTTONS; i++) {
+  for(int i = 0; i < NUM_DIRECT_BUTTONS; i++) {
     Bounce * b = &buttonBouncers[i];
     b->update();
     if(b->rose()) {
@@ -67,7 +64,6 @@ void loop() {
       keyPressEvent(&button_assignments[i], true);
     }
   }
-  */
 
   // look for a knob change and dispatch events
   //TODO iterate through knobs and look for change

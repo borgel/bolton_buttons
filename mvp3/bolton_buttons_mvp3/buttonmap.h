@@ -3,9 +3,11 @@
 #include <stdint.h>
 
 // 9 keys (including esc)
-#define NUM_NORMAL_KEYS (9)
-// add rotary, bonus switch
-#define NUM_BUTTONS (NUM_NORMAL_KEYS+1+1)
+#define NUM_DIRECT_BUTTONS 4  // buttons connected directly to the teensy
+#define NUM_INDIRECT_BUTTONS 12 // buttons on the IO expander
+#define NUM_KNOBS 4
+
+#define KEYMAP_SIZE 9   // 9 from original code FIXME change
 
 typedef void (*specialCallback)(bool const wasPress);
 
@@ -15,17 +17,17 @@ void encoderButtonCB(bool const wasPress);
 
 typedef struct {
   int pin;
-  int assignmentMapIndex;     // this order matters! do not change it casually!
+  int assignmentMapIndex;     // used to index into the selected keymap to activate an element
   specialCallback special;
 } ButtonAssignment;
 
 // TODO separate pin from key
-ButtonAssignment button_assignments[NUM_BUTTONS] = {
+ButtonAssignment button_assignments[NUM_DIRECT_BUTTONS] = {
   //pin, keymap index, related LED chain offset
-  {15, 5},   //knob 1
-  {16, 7},   //knob 2
-  {17, 6},   //knob 3
-  {18, 2},   //knob 4
+  {15, 0},   //knob 1
+  {16, 0},   //knob 2
+  {17, 0},   //knob 3
+  {18, 0},   //knob 4
 };
 
 #define KS_INACTIVE (0)
@@ -46,7 +48,7 @@ typedef struct {
 
 // keymaps for each button. ORDER MATTERS! When a key is pressed above
 // it will index into this array and invoke a key
-KeymapAssignment const keymapLayout[NUM_NORMAL_KEYS] = {
+KeymapAssignment const keymapLayout[KEYMAP_SIZE] = {
   //esc
   {"ESC",
     .press={KS_NO_MODIFIER, KEY_ESC, "ESC"},
@@ -104,7 +106,7 @@ KeymapAssignment const keymapLayout[NUM_NORMAL_KEYS] = {
     .increment={},
   },
 };
-KeymapAssignment const keymapTest[NUM_NORMAL_KEYS] = {
+KeymapAssignment const keymapTest[KEYMAP_SIZE] = {
   {"ESC",
     .press={KS_NO_MODIFIER, KEY_E, "ESC"},
     .decrement={},
@@ -175,8 +177,8 @@ KeymapAssignment defaultDialIdle = {
 
 // the master structure of maps
 KeymapConfig const allKeymaps[] = {
-  {"KiCAD: Schematic", NUM_NORMAL_KEYS, keymapTest, defaultDialLayout},
-  {"KiCAD: Layout", NUM_NORMAL_KEYS, keymapLayout, defaultDialLayout},
+  {"KiCAD: Schematic", KEYMAP_SIZE, keymapTest, defaultDialLayout},
+  {"KiCAD: Layout", KEYMAP_SIZE, keymapLayout, defaultDialLayout},
   {"Idle", 0, keymapLayout, defaultDialIdle},
   {NULL},   // end flag
 };
