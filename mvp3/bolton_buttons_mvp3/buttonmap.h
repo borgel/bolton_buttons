@@ -35,18 +35,18 @@ ButtonAssignment const button_assignments_direct[NUM_DIRECT_BUTTONS] = {
 // order matches pin
 ButtonAssignment const button_assignments_indirect[NUM_INDIRECT_BUTTONS] = {
   //pin (unused), keymap index
-  {0, 0},   //
-  {1, 1},   //
-  {2, 2},   //
-  {3, 3},   //
-  {4, 4},   //
-  {5, 4},   //
-  {6, 4},   //
-  {7, 4},   //
-  {8, 4},   //
-  {9, 4},   //
-  {10, 4},  //
-  {11, 4},  //
+  {0, 0},   // bottom pair, left
+  {1, 1},   // bottom pair, right
+  {2, 2},   // bottom side, top
+  {3, 3},   // bottom side, bottom
+  {4, 4},   // top pair, right
+  {5, 5},   // top pair, left
+  {6, 6},   // below middle, right
+  {7, 7},   // below middle, left
+  {8, 8},   // top side, top
+  {9, 9},   // top side, bottom
+  {10, 10}, // above middle, right
+  {11, 11}, // above middle, left
 };
 
 #define KS_INACTIVE (0)
