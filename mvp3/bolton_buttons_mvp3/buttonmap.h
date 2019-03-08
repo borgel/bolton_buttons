@@ -127,12 +127,12 @@ KeymapAssignment const buttonsLayout[NUM_INDIRECT_BUTTONS] = {
 
   // below middle
   //6
-  {"Delete",
-    .press={KS_NO_MODIFIER,       KEY_DELETE, "Delete"},
+  {"Undo",
+    .press={MODIFIERKEY_CTRL, KEY_Y, "Redo"},
   },
   //7
-  {"Edit",
-    .press={KS_NO_MODIFIER,       KEY_E, "Edit"},
+  {"Redo",
+    .press={MODIFIERKEY_CTRL, KEY_Z, "Undo"},
   },
 
   // upper side
@@ -147,12 +147,12 @@ KeymapAssignment const buttonsLayout[NUM_INDIRECT_BUTTONS] = {
 
   // above middle button
   //10
-  {"Undo",
-    .press={MODIFIERKEY_CTRL, KEY_Y, "Redo"},
+  {"Delete",
+    .press={KS_NO_MODIFIER,       KEY_DELETE, "Delete"},
   },
   //11
-  {"Redo",
-    .press={MODIFIERKEY_CTRL, KEY_Z, "Undo"},
+  {"Edit",
+    .press={KS_NO_MODIFIER,       KEY_E, "Edit"},
   },
 };
 
