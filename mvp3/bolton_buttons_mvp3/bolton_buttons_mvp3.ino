@@ -171,8 +171,8 @@ void switchKeyconfig() {
 // perform all safety checks and press or release a key with modifiers
 void safeKeyboardPress(KeyShortcut const * const ks) {
   //FIXME rm
-  Serial.printf("PKey %d %d\n", ks->modifier, ks->key);
-  return;
+  //Serial.printf("PKey %d %d\n", ks->modifier, ks->key);
+  //return;
   
   if(ks->modifier != KS_NO_MODIFIER) {
     Keyboard.press(ks->modifier);
@@ -182,8 +182,8 @@ void safeKeyboardPress(KeyShortcut const * const ks) {
   }
 }void safeKeyboardRelease(KeyShortcut const * const ks) {
   //FIXME rm
-  Serial.printf("RKey %d %d\n", ks->modifier, ks->key);
-  return;
+  //Serial.printf("RKey %d %d\n", ks->modifier, ks->key);
+  //return;
   
   if(ks->modifier != KS_NO_MODIFIER) {
     Keyboard.release(ks->modifier);
