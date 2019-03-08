@@ -23,8 +23,6 @@ static SmartKnob knobs[NUM_KNOBS] = {
   SmartKnob(5, 4),
 };
 
-static KeymapAssignment const * pressedKey;
-
 void setup() {
   // wait for USB enumeration
   delay(1000);
@@ -34,7 +32,7 @@ void setup() {
   // attach bouncer to all directly connected buttons
   ButtonAssignment const *ba;
   for(int i = 0; i < NUM_DIRECT_BUTTONS; i++) {
-    ba = &button_assignments[i];
+    ba = &button_assignments_direct[i];
 
     buttonBouncers[i].attach(ba->pin, INPUT_PULLUP);
     buttonBouncers[i].interval(40);
@@ -63,10 +61,14 @@ void loop() {
     Bounce * b = &buttonBouncers[i];
     b->update();
     if(b->rose()) {
-      keyPressEvent(&button_assignments[i], false);
+      //FIXME rm
+      Serial.printf("Int %d press? 0\n", i);
+      keyPressEvent(&button_assignments_direct[i], false);
     }
     else if(b->fell()) {
-      keyPressEvent(&button_assignments[i], true);
+      //FIXME rm
+      Serial.printf("Int %d press? 1\n", i);
+      keyPressEvent(&button_assignments_direct[i], true);
     }
   }
 
@@ -74,9 +76,7 @@ void loop() {
   for(int i = 0; i < NUM_KNOBS; i++) {
     SmartKnob * k = &knobs[i];
     if(k->didChange()) {
-      Serial.printf("k%d change\n", i);
-      
-      knobEvent(k->getChange() < 0);
+      knobEvent(i, k->getChange() < 0);
     }
   }
 }
@@ -84,6 +84,8 @@ void loop() {
 // invoked every time a button on the IO expander changes
 void expandedKeyPress(uint8_t const pin, bool const wasPress) {
   Serial.printf("Exp Btn %d press? %d\n", pin, wasPress);
+  
+  keyPressEvent(&button_assignments_indirect[pin], wasPress);
 }
 
 void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
@@ -96,47 +98,25 @@ void keyPressEvent(ButtonAssignment const * const b, bool const wasPress) {
   KeymapAssignment const * const ka = getKeymappingForKey(b);
   if(wasPress) {
     safeKeyboardPress(&ka->press);
-
-    // mark this key as being pressed
-    pressedKey = ka;
   }
   else {
     safeKeyboardRelease(&ka->press);
-
-    // unmark this key as being pressed
-    pressedKey = NULL;
   }
   strip.show();
 }
 
-
-void knobEvent(bool const wasIncrement) {
-  if(pressedKey) {
-    // release this key's pressed state
-    safeKeyboardRelease(&pressedKey->press);
-    
-    if(wasIncrement){
-      safeKeyboardPress(&pressedKey->increment);
-      //TODO need delay?
-      safeKeyboardRelease(&pressedKey->increment);
-    }
-    else {
-      safeKeyboardPress(&pressedKey->decrement);
-      //TODO need delay?
-      safeKeyboardRelease(&pressedKey->decrement);
-    }
+void knobEvent(uint8_t const index, bool const wasIncrement) {
+  Serial.printf("k%d change %d\n", index, wasIncrement);
+  
+  KeymapAssignment const * const ka = &allKeymaps[currentKeyConfig].knobmap[index];
+  
+  if(wasIncrement) {
+    safeKeyboardPress(&ka->increment);
+    safeKeyboardRelease(&ka->increment);
   }
   else {
-    // layout-based default knob
-    KeymapAssignment const * const ka = &allKeymaps[currentKeyConfig].defaultKnob;
-    if(wasIncrement) {
-      safeKeyboardPress(&ka->increment);
-      safeKeyboardRelease(&ka->increment);
-    }
-    else {
-      safeKeyboardPress(&ka->decrement);
-      safeKeyboardRelease(&ka->decrement);
-    }
+    safeKeyboardPress(&ka->decrement);
+    safeKeyboardRelease(&ka->decrement);
   }
 }
 
@@ -146,7 +126,7 @@ void modeButtonCB(bool const wasPress) {
   }
 }
 
-void encoderButtonCB(bool const wasPress) {
+void centerButtonCB(bool const wasPress) {
   Serial.printf("Encoder button press was %d", wasPress);
 }
 
@@ -155,8 +135,16 @@ const KeymapAssignment * const getKeymappingForKey(ButtonAssignment const * cons
     Serial.println("ERROR: Tried to get keymap for key without index");
     while(1);
   }
-  // the current group of key assignments
-  KeymapAssignment const * const ka = allKeymaps[currentKeyConfig].keymap;
+  
+  KeymapAssignment const * ka;
+  if(butt->isKnob) {
+    ka = allKeymaps[currentKeyConfig].knobmap;
+  }
+  else {
+    // the current group of key assignments
+    ka = allKeymaps[currentKeyConfig].buttonmap;
+  }
+  
   // get the assignment for this key
   return &ka[butt->assignmentMapIndex];
 }
@@ -174,7 +162,7 @@ void switchKeyconfig() {
 // perform all safety checks and press or release a key with modifiers
 void safeKeyboardPress(KeyShortcut const * const ks) {
   //FIXME rm
-  Serial.printf("PKey %d\n", ks->key);
+  Serial.printf("PKey %d %d\n", ks->modifier, ks->key);
   return;
   
   if(ks->modifier != KS_NO_MODIFIER) {
@@ -185,7 +173,7 @@ void safeKeyboardPress(KeyShortcut const * const ks) {
   }
 }void safeKeyboardRelease(KeyShortcut const * const ks) {
   //FIXME rm
-  Serial.printf("RKey %d\n", ks->key);
+  Serial.printf("RKey %d %d\n", ks->modifier, ks->key);
   return;
   
   if(ks->modifier != KS_NO_MODIFIER) {

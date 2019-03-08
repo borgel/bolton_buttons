@@ -26,7 +26,7 @@ void ep_Init(uint8_t const interruptPin, ep_ButtonChangeCB const cb) {
   // each port all inputs, except last bit of second
   // port 0. bit set to 1 is input
   tca9555.setPortDirection(0, 0xFF);
-  tca9555.setPortDirection(1, ~((byte)(1 << 7)));
+  tca9555.setPortDirection(1, (byte)(~(1 << 7)));
 
   // grab initial states
   lastButtonMask = 0x7FFF & tca9555.getInputStates();
