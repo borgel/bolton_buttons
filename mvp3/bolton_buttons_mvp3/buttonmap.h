@@ -95,55 +95,64 @@ KeymapAssignment const knobsLayout [NUM_KNOBS] = {
 
 // it will index into this array and invoke a key
 KeymapAssignment const buttonsLayout[NUM_INDIRECT_BUTTONS] = {
-  //esc
-  {"ESC",
+  // bottom pair
+  //0
+  {"N",
     .press={KS_NO_MODIFIER, KEY_ESC, "ESC"},
-    .decrement={MODIFIERKEY_CTRL, KEY_Z, "Undo"},
-    .increment={MODIFIERKEY_CTRL, KEY_Y, "Redo"},
   },
-  //
+  //1
+  {"N",
+    .press={KS_NO_MODIFIER, KEY_V, "Layer Swap"},
+  },
+
+  // bottom side
+  //2
+  {"N",
+    .press={KS_NO_MODIFIER, KEY_DELETE, "Delete"},
+  },
+  //3
+  {"N",
+    .press={KS_NO_MODIFIER,    KEY_F, "Flip"},
+  },
+
+  // top pair
+  //4
+  {"Flip",
+    .press={KS_NO_MODIFIER,        KEY_F, "Flip"},
+  },
+  //5
   {"Layer Swap",
     .press={KS_NO_MODIFIER, KEY_V, "Layer Swap"},
   },
-  //
+
+  // below middle
+  //6
   {"Delete",
-    .press={KS_NO_MODIFIER, KEY_DELETE, "Delete"},
+    .press={KS_NO_MODIFIER,       KEY_DELETE, "Delete"},
   },
-  //
-  {"Flip",
-    .press={KS_NO_MODIFIER,    KEY_F, "Flip"},
-  },
-  //
+  //7
   {"Edit",
-    .press={KS_NO_MODIFIER,        KEY_E, "Edit"},
+    .press={KS_NO_MODIFIER,       KEY_E, "Edit"},
   },
-  //
-  {"Flip",
-    .press={KS_NO_MODIFIER,    KEY_F, "Flip"},
+
+  // upper side
+  //8
+  {"N",
+    .press={KS_NO_MODIFIER,        KEY_E, "N"},
   },
-  //
-  {"Edit",
-    .press={KS_NO_MODIFIER,        KEY_E, "Edit"},
+  //9
+  {"N",
+    .press={KS_NO_MODIFIER,    KEY_F, "N"},
   },
-  //
-  {"Flip",
-    .press={KS_NO_MODIFIER,    KEY_F, "Flip"},
+
+  // above middle button
+  //10
+  {"Undo",
+    .press={MODIFIERKEY_CTRL, KEY_Y, "Redo"},
   },
-  //
-  {"Edit",
-    .press={KS_NO_MODIFIER,        KEY_E, "Edit"},
-  },
-  //
-  {"Flip",
-    .press={KS_NO_MODIFIER,    KEY_F, "Flip"},
-  },
-  //
-  {"Edit",
-    .press={KS_NO_MODIFIER,        KEY_E, "Edit"},
-  },
-  //
-  {"Flip",
-    .press={KS_NO_MODIFIER,    KEY_F, "Flip"},
+  //11
+  {"Redo",
+    .press={MODIFIERKEY_CTRL, KEY_Z, "Undo"},
   },
 };
 
