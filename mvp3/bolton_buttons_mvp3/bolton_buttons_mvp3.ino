@@ -127,7 +127,16 @@ void modeButtonCB(bool const wasPress) {
 }
 
 void centerButtonCB(bool const wasPress) {
-  Serial.printf("Encoder button press was %d", wasPress);
+  KeymapAssignment const esc = {"ESC",
+    .press={KS_NO_MODIFIER, KEY_ESC, "ESC"},
+  };
+  
+  if(wasPress) {
+    safeKeyboardPress(&esc.press);
+  }
+  else {
+    safeKeyboardRelease(&esc.press);
+  }
 }
 
 const KeymapAssignment * const getKeymappingForKey(ButtonAssignment const * const butt) {
